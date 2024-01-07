@@ -2,12 +2,14 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BrandModule } from './brand/brand.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './__prisma__/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-import { CommonModule } from './common/common.module';
-import { SeederModule } from './prisma/seeder/seeder.module';
+import { CommonModule } from './__common__/common.module';
+import { SeederModule } from './__prisma__/seeder/seeder.module';
 import { CanvassModule } from './canvass/canvass.module';
 import { ItemModule } from './item/item.module';
+import { EmployeeModule } from './employee/employee.module';
+import { UnitModule } from './unit/unit.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { ItemModule } from './item/item.module';
     SeederModule,
     CanvassModule,
     ItemModule,
+    EmployeeModule,
+    UnitModule,
   ],
 })
 export class AppModule {}

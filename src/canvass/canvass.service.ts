@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCanvassInput } from './dto/create-canvass.input';
 import { UpdateCanvassInput } from './dto/update-canvass.input';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/__prisma__/prisma.service';
 import { CreateItemInput } from 'src/item/dto/create-item.input';
 import { Canvass } from '@prisma/client';
 
@@ -12,12 +12,13 @@ export class CanvassService {
 
   // prisma behind the scenes uses db transaction
   async create(input: CreateCanvassInput): Promise<Canvass> {
+    console.log('create()', input)
     await this.validateUsersAndItemsExist(input);
   
     const createdCanvass = await this.prisma.canvass.create({
       data: {
         rc_number: input.rc_number,
-        date_requested: input.date_requested,
+        date_requested: new Date(input.date_requested),
         purpose: input.purpose,
         notes: input.notes,
         requested_by: { connect: { id: input.requested_by_id } },
@@ -40,15 +41,33 @@ export class CanvassService {
     return createdCanvass;
   }
 
-  findAll() {
-    return `This action returns all canvass`;
+  async findAll(): Promise<Canvass[]> {
+    return this.prisma.canvass.findMany({
+      include: {
+        requested_by: true, 
+        noted_by: true,    
+        canvass_items: {
+          include: {
+            item: {
+              include: {
+                unit: true, 
+                brand: true
+              }
+            }
+          }
+        }, 
+      },
+      where: {
+        is_deleted: false
+      }
+    });
   }
 
   findOne(id: number) {
     return `This action returns a #${id} canvass`;
   }
 
-  update(id: number, updateCanvassInput: UpdateCanvassInput) {
+  update(id: string, updateCanvassInput: UpdateCanvassInput) {
     return `This action updates a #${id} canvass`;
   }
 
@@ -71,13 +90,13 @@ export class CanvassService {
   }
 
   private async validateUserExists(userId: string): Promise<boolean> {
-    const user = await this.prisma.employee.findUnique({ where: { id: userId } });
+    const user = await this.prisma.employee.findUnique({ where: { id: userId, is_deleted: false } });
     return !!user;
   }
 
   private async validateBrandAndUnitExist(item: CreateItemInput): Promise<void> {
-    const brand = await this.prisma.brand.findUnique({ where: { id: item.brand_id } });
-    const unit = await this.prisma.unit.findUnique({ where: { id: item.unit_id } });
+    const brand = await this.prisma.brand.findUnique({ where: { id: item.brand_id, is_deleted: false } });
+    const unit = await this.prisma.unit.findUnique({ where: { id: item.unit_id, is_deleted: false } });
 
     if (!brand || !unit) {
       throw new NotFoundException(`Brand or unit not found for item`);

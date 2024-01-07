@@ -9,23 +9,26 @@ export class CanvassResolver {
   constructor(private readonly canvassService: CanvassService) {}
 
   @Mutation(() => Canvass)
-  createCanvass(@Args('createCanvassInput') createCanvassInput: CreateCanvassInput) {
+  createCanvass(@Args('input') createCanvassInput: CreateCanvassInput) {
     return this.canvassService.create(createCanvassInput);
   }
 
-  @Query(() => [Canvass], { name: 'canvass' })
-  findAll() {
+  @Query(() => [Canvass])
+  canvasses() {
     return this.canvassService.findAll();
   }
 
-  @Query(() => Canvass, { name: 'canvass' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Canvass)
+  canvass(@Args('id', { type: () => Int }) id: number) {
     return this.canvassService.findOne(id);
   }
 
   @Mutation(() => Canvass)
-  updateCanvass(@Args('updateCanvassInput') updateCanvassInput: UpdateCanvassInput) {
-    return this.canvassService.update(updateCanvassInput.id, updateCanvassInput);
+  updateBrand(
+    @Args('id') id: string,
+    @Args('input') updateCanvassInput: UpdateCanvassInput
+  ) {
+    return this.canvassService.update(id, updateCanvassInput);
   }
 
   @Mutation(() => Canvass)

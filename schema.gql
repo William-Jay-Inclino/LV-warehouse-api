@@ -7,23 +7,63 @@ type Brand {
   name: String!
 }
 
+type Employee {
+  id: String!
+  firstname: String!
+  middlename: String!
+  lastname: String!
+  position: Float!
+  department_id: String!
+}
+
+type Unit {
+  id: String!
+  name: String!
+}
+
+type Item {
+  id: String!
+  description: String!
+  brand_id: String!
+  brand: Brand!
+  unit_id: String!
+  unit: Unit!
+  quantity: Float!
+}
+
+type CanvassItem {
+  id: String!
+  canvass_id: String!
+  canvass: Canvass!
+  item_id: String!
+  item: Item!
+}
+
 type Canvass {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: String!
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String!
+  requested_by_id: String!
+  requested_by: Employee!
+  noted_by_id: String!
+  noted_by: Employee!
+  canvass_items: [CanvassItem!]!
 }
 
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
+  canvasses: [Canvass!]!
   canvass(id: Int!): Canvass!
 }
 
 type Mutation {
   createBrand(data: CreateBrandInput!): Brand!
-  updateBrand(id: String!, data: UpdateBrandInput!): Brand!
+  updateBrand(id: String!, input: UpdateCanvassInput!): Canvass!
   removeBrand(id: String!): Boolean!
-  createCanvass(createCanvassInput: CreateCanvassInput!): Canvass!
-  updateCanvass(updateCanvassInput: UpdateCanvassInput!): Canvass!
+  createCanvass(input: CreateCanvassInput!): Canvass!
   removeCanvass(id: Int!): Canvass!
 }
 
@@ -31,17 +71,13 @@ input CreateBrandInput {
   name: String!
 }
 
-input UpdateBrandInput {
-  name: String!
-}
-
-input CreateCanvassInput {
-  rc_number: String!
-  date_requested: String!
-  purpose: String!
-  notes: String!
-  requested_by_id: String!
-  noted_by_id: String!
+input UpdateCanvassInput {
+  rc_number: String
+  date_requested: String
+  purpose: String
+  notes: String
+  requested_by_id: String
+  noted_by_id: String
   items: [CreateItemInput!]!
 }
 
@@ -52,13 +88,12 @@ input CreateItemInput {
   quantity: Int!
 }
 
-input UpdateCanvassInput {
-  rc_number: String
-  date_requested: String
-  purpose: String
-  notes: String
-  requested_by_id: String
-  noted_by_id: String
-  items: [CreateItemInput!]
-  id: Int!
+input CreateCanvassInput {
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String!
+  requested_by_id: String!
+  noted_by_id: String!
+  items: [CreateItemInput!]!
 }

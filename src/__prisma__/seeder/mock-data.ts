@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, Brand, Canvass, CanvassItem, Classification, Department, Division, Employee, JO, JOApprover, JOApproverSetting, MEQS, MEQSApproverSetting, PO, POApproverSetting, RV, RVApproverSetting, SPR, SPRApproverSetting, Supplier, Unit, Item } from '../../common/entities';
+import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, Brand, Canvass, CanvassItem, Classification, Department, Division, Employee, JO, JOApprover, JOApproverSetting, MEQS, MEQSApproverSetting, PO, POApproverSetting, RV, RVApproverSetting, SPR, SPRApproverSetting, Supplier, Unit, Item } from '../../__common__/entities';
 
 export const suppliers: Supplier[] = [
     { 
