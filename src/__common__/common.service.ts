@@ -1,12 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../__prisma__/prisma.service';
-import { Logger } from '@nestjs/common';
 import { CreateItemInput } from 'src/item/dto/create-item.input';
 
 @Injectable()
 export class CommonService {
-
-    private readonly logger = new Logger(CommonService.name);
 
     constructor(private readonly prisma: PrismaService) {}
     
