@@ -7,15 +7,24 @@ type Brand {
   name: String!
 }
 
+type Canvass {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
+  canvass(id: Int!): Canvass!
 }
 
 type Mutation {
   createBrand(data: CreateBrandInput!): Brand!
   updateBrand(id: String!, data: UpdateBrandInput!): Brand!
   removeBrand(id: String!): Boolean!
+  createCanvass(createCanvassInput: CreateCanvassInput!): Canvass!
+  updateCanvass(updateCanvassInput: UpdateCanvassInput!): Canvass!
+  removeCanvass(id: Int!): Canvass!
 }
 
 input CreateBrandInput {
@@ -24,4 +33,32 @@ input CreateBrandInput {
 
 input UpdateBrandInput {
   name: String!
+}
+
+input CreateCanvassInput {
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String!
+  requested_by_id: String!
+  noted_by_id: String!
+  items: [CreateItemInput!]!
+}
+
+input CreateItemInput {
+  description: String!
+  brand_id: String!
+  unit_id: String!
+  quantity: Int!
+}
+
+input UpdateCanvassInput {
+  rc_number: String
+  date_requested: String
+  purpose: String
+  notes: String
+  requested_by_id: String
+  noted_by_id: String
+  items: [CreateItemInput!]
+  id: Int!
 }

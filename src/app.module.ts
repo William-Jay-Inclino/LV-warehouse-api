@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
 import { SeederModule } from './prisma/seeder/seeder.module';
+import { CanvassModule } from './canvass/canvass.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { SeederModule } from './prisma/seeder/seeder.module';
     PrismaModule,
     CommonModule,
     SeederModule,
+    CanvassModule,
+    ItemModule,
   ],
 })
 export class AppModule {}
