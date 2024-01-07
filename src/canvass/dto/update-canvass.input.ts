@@ -9,9 +9,9 @@ import { CreateItemInput } from '../../item/dto/create-item.input';
 @InputType()
 export class UpdateCanvassInput extends PartialType(CreateCanvassInput) {
 
-  @Field(() => String, { nullable: true })
-  @IsOptional()
-  rc_number?: string;
+  // @Field(() => String, { nullable: true })
+  // @IsOptional()
+  // rc_number?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

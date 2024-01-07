@@ -418,7 +418,7 @@ const canvassId = faker.string.uuid()
 export const canvasses: Canvass[] = [
     {
         id: canvassId,
-        rc_number: '23-00001',
+        rc_number: '24-00001',
         date_requested: new Date("2024-01-01"),
         purpose: 'purpose',
         notes: 'notes',

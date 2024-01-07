@@ -57,6 +57,7 @@ type Query {
   brand(id: String!): Brand!
   canvasses: [Canvass!]!
   canvass(id: String!): Canvass!
+  rc_number: String!
 }
 
 type Mutation {

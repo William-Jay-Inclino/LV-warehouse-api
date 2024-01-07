@@ -35,4 +35,9 @@ export class CanvassResolver {
   removeCanvass(@Args('id', { type: () => String }) id: string) {
     return this.canvassService.remove(id);
   }
+
+  @Query(() => String)
+  rc_number() {
+    return this.canvassService.findLatestRcNumber()
+  }
 }
