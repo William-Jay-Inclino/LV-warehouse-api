@@ -323,8 +323,8 @@ model JO {
   purpose           String
   notes             String
   status            Int
-  canceller_id      String
-  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  canceller_id      String?
+  canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
@@ -354,13 +354,13 @@ model JOItem {
 }
 
 model JOApprover {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   jo_id         String
-  jo            JO       @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  jo            JO        @relation(fields: [jo_id], references: [id], onDelete: Restrict)
   approver_id   String
-  approver      Employee @relation(fields: [approver_id], references: [id], onDelete: Restrict)
-  date_approval DateTime
-  notes         String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
   status        Int
   label         String
   order         Int
@@ -378,8 +378,8 @@ model RV {
   date_requested    DateTime
   canvass_id        String         @unique
   canvass           Canvass        @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
-  work_order_no     String
-  work_order_date   DateTime
+  work_order_no     String?
+  work_order_date   DateTime?
   classification_id String
   classification    Classification @relation(fields: [classification_id], references: [id], onDelete: Restrict)
   supervisor_id     String
@@ -387,13 +387,13 @@ model RV {
   purpose           String
   notes             String
   status            Int
-  canceller_id      String
-  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  canceller_id      String?
+  canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
   rv_approvers RVApprover[]
-  jo_items     RVItem[]
+  rv_items     RVItem[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -418,13 +418,13 @@ model RVItem {
 }
 
 model RVApprover {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   rv_id         String
-  rv            RV       @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  rv            RV        @relation(fields: [rv_id], references: [id], onDelete: Restrict)
   approver_id   String
-  approver      Employee @relation(fields: [approver_id], references: [id], onDelete: Restrict)
-  date_approval DateTime
-  notes         String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
   status        Int
   label         String
   order         Int
@@ -451,8 +451,8 @@ model SPR {
   purpose           String
   notes             String
   status            Int
-  canceller_id      String
-  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  canceller_id      String?
+  canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
@@ -482,13 +482,13 @@ model SPRItem {
 }
 
 model SPRApprover {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   spr_id        String
-  spr           SPR      @relation(fields: [spr_id], references: [id], onDelete: Restrict)
+  spr           SPR       @relation(fields: [spr_id], references: [id], onDelete: Restrict)
   approver_id   String
-  approver      Employee @relation(fields: [approver_id], references: [id], onDelete: Restrict)
-  date_approval DateTime
-  notes         String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
   status        Int
   label         String
   order         Int
@@ -501,20 +501,20 @@ model SPRApprover {
 }
 
 model MEQS {
-  id             String   @id @default(uuid())
-  jo_id          String?  @unique
-  jo             JO?      @relation(fields: [jo_id], references: [id], onDelete: Restrict)
-  rv_id          String?  @unique
-  rv             RV?      @relation(fields: [rv_id], references: [id], onDelete: Restrict)
-  spr_id         String?  @unique
-  spr            SPR?     @relation(fields: [spr_id], references: [id], onDelete: Restrict)
-  meqs_number    String   @unique
+  id             String    @id @default(uuid())
+  jo_id          String?   @unique
+  jo             JO?       @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  rv_id          String?   @unique
+  rv             RV?       @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  spr_id         String?   @unique
+  spr            SPR?      @relation(fields: [spr_id], references: [id], onDelete: Restrict)
+  meqs_number    String    @unique
   reference_type Int
   meqs_date      DateTime
   purpose        String
   status         Int
-  canceller_id   String
-  canceller      Employee @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  canceller_id   String?
+  canceller      Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
 
   meqs_approvers MEQSApprover[]
   meqs_items     MEQSItem[]
@@ -544,13 +544,13 @@ model MEQSItem {
 }
 
 model MEQSApprover {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   meqs_id       String
-  meqs          MEQS     @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
+  meqs          MEQS      @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
   approver_id   String
-  approver      Employee @relation(fields: [approver_id], references: [id], onDelete: Restrict)
-  date_approval DateTime
-  notes         String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
   status        Int
   label         String
   order         Int
@@ -563,18 +563,18 @@ model MEQSApprover {
 }
 
 model PO {
-  id            String   @id @default(uuid())
-  meqs_id       String   @unique
-  meqs          MEQS     @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
-  po_number     String   @unique
+  id            String    @id @default(uuid())
+  meqs_id       String    @unique
+  meqs          MEQS      @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
+  po_number     String    @unique
   supplier_id   String
-  supplier      Supplier @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
+  supplier      Supplier  @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
   po_date       DateTime
   payment_terms String
   purpose       String
   status        Int
-  canceller_id  String
-  canceller     Employee @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  canceller_id  String?
+  canceller     Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
 
   po_approvers POApprover[]
   po_items     POItem[]
@@ -601,13 +601,13 @@ model POItem {
 }
 
 model POApprover {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   po_id         String
-  po            PO       @relation(fields: [po_id], references: [id], onDelete: Restrict)
+  po            PO        @relation(fields: [po_id], references: [id], onDelete: Restrict)
   approver_id   String
-  approver      Employee @relation(fields: [approver_id], references: [id], onDelete: Restrict)
-  date_approval DateTime
-  notes         String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
   status        Int
   label         String
   order         Int

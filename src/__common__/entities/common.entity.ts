@@ -192,7 +192,7 @@ export interface RV {
     canvass: Canvass
     supervisor_id: string 
     supervisor: Employee
-    classification_id?: string
+    classification_id: string
     classification: Classification | null
     rv_number: string
     date_requested: string
@@ -203,7 +203,11 @@ export interface RV {
     is_cancelled: boolean
     purpose: string
     notes: string
-
+    status: APPROVAL_STATUS
+    canceller_id: string 
+    canceller: Employee
+    requested_by_id: string 
+    requested_by: Employee
 }
 
 export interface RVItem {

@@ -28,7 +28,7 @@ type Item {
   brand: Brand!
   unit_id: String!
   unit: Unit!
-  quantity: Float!
+  quantity: Int!
 }
 
 type CanvassItem {
@@ -52,12 +52,64 @@ type Canvass {
   canvass_items: [CanvassItem!]!
 }
 
+type RVItem {
+  id: String!
+  rv_id: String!
+  rv: RV!
+  item_id: String!
+  item: Item!
+}
+
+type Classification {
+  id: String!
+  name: String!
+}
+
+type RVApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  rv_id: String!
+  rv: RV!
+  date_approval: String!
+  notes: String!
+  status: Int!
+  label: String!
+  order: Int!
+}
+
+type RV {
+  id: String!
+  canvass_id: String!
+  canvass: Canvass!
+  supervisor_id: String!
+  supervisor: Employee!
+  classification_id: String!
+  classification: Classification!
+  rv_number: String!
+  date_requested: String!
+  work_order_no: String!
+  work_order_date: String!
+  rv_items: [RVItem!]!
+  approvers: [RVApprover!]!
+  purpose: String!
+  notes: String!
+  status: Int!
+  canceller_id: String!
+  canceller: Employee!
+  requested_by_id: String!
+  requested_by: Employee!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
   canvasses: [Canvass!]!
   canvass(id: String!): Canvass!
   rc_number: String!
+  rvs: [RV!]!
+  rv(id: String!): RV!
+  rv_number: String!
 }
 
 type Mutation {
@@ -67,6 +119,9 @@ type Mutation {
   createCanvass(input: CreateCanvassInput!): Canvass!
   updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
   removeCanvass(id: String!): Canvass!
+  createRv(input: CreateRvInput!): RV!
+  updateRv(id: String!, input: UpdateRvInput!): RV!
+  removeRv(id: String!): RV!
 }
 
 input CreateBrandInput {
@@ -102,4 +157,44 @@ input UpdateCanvassInput {
   requested_by_id: String
   noted_by_id: String
   items: [CreateItemInput!]!
+}
+
+input CreateRvInput {
+  canvass_id: String!
+  supervisor_id: String!
+  classification_id: String!
+  rv_number: String!
+  date_requested: String!
+  work_order_no: String!
+  work_order_date: String!
+  items: [CreateItemInput!]!
+  approvers: [CreateRvApproverInput!]!
+  purpose: String!
+  notes: String!
+  status: Int!
+  requested_by_id: String!
+}
+
+input CreateRvApproverInput {
+  approver_id: String!
+  status: Int!
+  label: String!
+  order: Int!
+}
+
+input UpdateRvInput {
+  canvass_id: String!
+  supervisor_id: String!
+  classification_id: String!
+  rv_number: String
+  date_requested: String!
+  work_order_no: String!
+  work_order_date: String!
+  items: [CreateItemInput!]!
+  approvers: [CreateRvApproverInput!]
+  purpose: String!
+  notes: String!
+  status: Int!
+  requested_by_id: String!
+  canceller_id: String!
 }

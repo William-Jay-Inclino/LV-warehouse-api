@@ -23,14 +23,16 @@ export class CanvassService {
 
       await this.common.validateRcNumberUnique({
           rcNumber: input.rc_number,
-          table: 'canvass'
+          table: 'canvass',
+          field: 'rc_number'
       })
 
-      await this.common.validateUsersAndItemsExist({
+      await this.common.validateIds({
         requested_by_id: input.requested_by_id,
         noted_by_id: input.noted_by_id,
-        items: input.items
       });
+
+      await this.common.validateItems(input.items)
 
       const createdCanvass = await this.prisma.canvass.create({
         data: {

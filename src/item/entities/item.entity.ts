@@ -1,4 +1,4 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Brand } from 'src/brand/entities/brand.entity';
 import { Unit } from 'src/unit/entities/unit.entity';
 
@@ -23,7 +23,7 @@ export class Item {
   @Field(() => Unit)
   unit: Unit;
 
-  @Field(() => Number)
+  @Field(() => Int)
   quantity: string;
 
 }

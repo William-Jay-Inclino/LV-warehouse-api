@@ -2,7 +2,7 @@
 
 import { InputType, Int, Field, PartialType } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsDate, IsInt, IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, ValidateNested, IsOptional, IsString } from 'class-validator';
 import { CreateCanvassInput } from './create-canvass.input';
 import { CreateItemInput } from '../../item/dto/create-item.input';
 
@@ -21,18 +21,22 @@ export class UpdateCanvassInput extends PartialType(CreateCanvassInput) {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
+  @IsString()
   purpose?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
+  @IsString()
   notes?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
+  @IsString()
   requested_by_id?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
+  @IsString()
   noted_by_id?: string;
 
   @Field(() => [CreateItemInput])

@@ -10,6 +10,8 @@ import { CanvassModule } from './canvass/canvass.module';
 import { ItemModule } from './item/item.module';
 import { EmployeeModule } from './employee/employee.module';
 import { UnitModule } from './unit/unit.module';
+import { RvModule } from './rv/rv.module';
+import { ClassificationModule } from './classification/classification.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { UnitModule } from './unit/unit.module';
     ItemModule,
     EmployeeModule,
     UnitModule,
+    RvModule,
+    ClassificationModule,
   ],
 })
 export class AppModule {}
