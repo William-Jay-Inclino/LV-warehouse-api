@@ -508,7 +508,7 @@ model MEQS {
   rv             RV?      @relation(fields: [rv_id], references: [id], onDelete: Restrict)
   spr_id         String?  @unique
   spr            SPR?     @relation(fields: [spr_id], references: [id], onDelete: Restrict)
-  meqs_number    String
+  meqs_number    String   @unique
   reference_type Int
   meqs_date      DateTime
   purpose        String
@@ -566,7 +566,7 @@ model PO {
   id            String   @id @default(uuid())
   meqs_id       String   @unique
   meqs          MEQS     @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
-  po_number     String
+  po_number     String   @unique
   supplier_id   String
   supplier      Supplier @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
   po_date       DateTime
