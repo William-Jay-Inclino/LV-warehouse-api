@@ -43,7 +43,6 @@ export class BrandService {
             where: {id, is_deleted: false}
         })
 
-
     }
 
     async update(id: string, updateBrandInput: UpdateBrandInput): Promise<Brand> {

@@ -19,12 +19,12 @@ export class CanvassResolver {
   }
 
   @Query(() => Canvass)
-  canvass(@Args('id', { type: () => Int }) id: number) {
+  canvass(@Args('id', { type: () => String }) id: string) {
     return this.canvassService.findOne(id);
   }
 
   @Mutation(() => Canvass)
-  updateBrand(
+  updateCanvass(
     @Args('id') id: string,
     @Args('input') updateCanvassInput: UpdateCanvassInput
   ) {
@@ -32,7 +32,7 @@ export class CanvassResolver {
   }
 
   @Mutation(() => Canvass)
-  removeCanvass(@Args('id', { type: () => Int }) id: number) {
+  removeCanvass(@Args('id', { type: () => String }) id: string) {
     return this.canvassService.remove(id);
   }
 }

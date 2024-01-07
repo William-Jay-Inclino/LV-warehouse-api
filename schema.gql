@@ -56,28 +56,33 @@ type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
   canvasses: [Canvass!]!
-  canvass(id: Int!): Canvass!
+  canvass(id: String!): Canvass!
 }
 
 type Mutation {
   createBrand(data: CreateBrandInput!): Brand!
-  updateBrand(id: String!, input: UpdateCanvassInput!): Canvass!
+  updateBrand(id: String!, data: UpdateBrandInput!): Brand!
   removeBrand(id: String!): Boolean!
   createCanvass(input: CreateCanvassInput!): Canvass!
-  removeCanvass(id: Int!): Canvass!
+  updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
+  removeCanvass(id: String!): Canvass!
 }
 
 input CreateBrandInput {
   name: String!
 }
 
-input UpdateCanvassInput {
-  rc_number: String
-  date_requested: String
-  purpose: String
-  notes: String
-  requested_by_id: String
-  noted_by_id: String
+input UpdateBrandInput {
+  name: String!
+}
+
+input CreateCanvassInput {
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String!
+  requested_by_id: String!
+  noted_by_id: String!
   items: [CreateItemInput!]!
 }
 
@@ -88,12 +93,12 @@ input CreateItemInput {
   quantity: Int!
 }
 
-input CreateCanvassInput {
-  rc_number: String!
-  date_requested: String!
-  purpose: String!
-  notes: String!
-  requested_by_id: String!
-  noted_by_id: String!
+input UpdateCanvassInput {
+  rc_number: String
+  date_requested: String
+  purpose: String
+  notes: String
+  requested_by_id: String
+  noted_by_id: String
   items: [CreateItemInput!]!
 }
