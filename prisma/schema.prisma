@@ -16,7 +16,7 @@ model Supplier {
   contact String
 
   supplier_items SupplierItem[]
-  po             PO[]
+  pos            PO[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -61,7 +61,7 @@ model Department {
 model Employee {
   id            String     @id @default(uuid())
   firstname     String
-  middlename    String
+  middlename    String?
   lastname      String
   position      Int
   department_id String
@@ -76,15 +76,26 @@ model Employee {
   meqs_approver_setting MEQSApproverSetting? @relation("MEQSApproverSetting")
   po_approver_setting   POApproverSetting?   @relation("POApproverSetting")
 
-  jos  JO[]
-  rvs  RV[]
-  sprs SPR[]
+  jo_cancellers   JO[] @relation("canceller")
+  jo_supervisors  JO[] @relation("supervisor")
+  jo_requested_by JO[] @relation("requestedBy")
+
+  rv_cancellers   RV[] @relation("canceller")
+  rv_supervisors  RV[] @relation("supervisor")
+  rv_requested_by RV[] @relation("requestedBy")
+
+  spr_cancellers   SPR[] @relation("canceller")
+  spr_supervisors  SPR[] @relation("supervisor")
+  spr_requested_by SPR[] @relation("requestedBy")
 
   jo_approvers   JOApprover[]
   rv_approvers   RVApprover[]
   spr_approvers  SPRApprover[]
   meqs_approvers MEQSApprover[]
   pos_approvers  POApprover[]
+
+  meqs_cancellers MEQS[] @relation("canceller")
+  po_cancellers   PO[]   @relation("canceller")
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -112,10 +123,11 @@ model Unit {
   id   String @id @default(uuid())
   name String
 
+  items Item[]
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
-  items      Item[]
 
   @@map("unit")
 }
@@ -124,10 +136,11 @@ model Brand {
   id   String @id @default(uuid())
   name String
 
+  items Item[]
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
-  items      Item[]
 
   @@map("brand")
 }
@@ -137,10 +150,11 @@ model Vehicle {
   name         String
   plate_number String
 
+  sprs SPR[]
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
-  sprs       SPR[]
 
   @@map("vehicle")
 }
@@ -222,18 +236,19 @@ model Item {
   brand       Brand  @relation(fields: [brand_id], references: [id], onDelete: Restrict)
   unit_id     String
   unit        Unit   @relation(fields: [unit_id], references: [id], onDelete: Restrict)
+  quantity    Int
 
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
-  is_deleted    Boolean       @default(false)
-  canvass_items CanvassItem[]
-
+  canvass_item   CanvassItem?
   supplier_items SupplierItem[]
   jo_items       JOItem[]
   rv_items       RVItem[]
   spr_items      SPRItem[]
   meqs_items     MEQSItem[]
   po_items       POItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
 
   @@map("item")
 }
@@ -249,21 +264,26 @@ model Canvass {
   noted_by_id     String
   noted_by        Employee @relation(fields: [noted_by_id], references: [id], onDelete: Restrict, name: "notedBy")
 
+  jos  JO?
+  rvs  RV?
+  sprs SPR?
+  meqs MEQS?
+
+  canvass_items CanvassItem[]
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
-  jos        JO[]
-  rvs        RV[]
-  sprs       SPR[]
-  meqs       MEQS[]
 
   @@map("canvass")
 }
 
 model CanvassItem {
-  id      String @id @default(uuid())
-  item_id String
-  items   Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+  id         String  @id @default(uuid())
+  canvass_id String
+  canvass    Canvass @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  item_id    String  @unique
+  item       Item    @relation(fields: [item_id], references: [id], onDelete: Restrict)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -291,7 +311,7 @@ model JO {
   id                String         @id @default(uuid())
   jo_number         String         @unique
   date_requested    DateTime
-  canvass_id        String
+  canvass_id        String         @unique
   canvass           Canvass        @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
   equipment         String
   classification_id String
@@ -299,22 +319,30 @@ model JO {
   department_id     String
   department        Department     @relation(fields: [department_id], references: [id], onDelete: Restrict)
   supervisor_id     String
-  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict)
-  is_cancelled      Boolean
+  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
+  status            Int
+  canceller_id      String
+  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
   jo_approvers JOApprover[]
+  jo_items     JOItem[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
+  meqs       MEQS?
 
   @@map("job_order")
 }
 
 model JOItem {
   id      String @id @default(uuid())
+  jo_id   String
+  jo      JO     @relation(fields: [jo_id], references: [id], onDelete: Restrict)
   item_id String
   item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
 
@@ -348,29 +376,37 @@ model RV {
   id                String         @id @default(uuid())
   rv_number         String         @unique
   date_requested    DateTime
-  canvass_id        String
+  canvass_id        String         @unique
   canvass           Canvass        @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
   work_order_no     String
   work_order_date   DateTime
   classification_id String
   classification    Classification @relation(fields: [classification_id], references: [id], onDelete: Restrict)
   supervisor_id     String
-  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict)
-  is_cancelled      Boolean
+  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
+  status            Int
+  canceller_id      String
+  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
   rv_approvers RVApprover[]
+  jo_items     RVItem[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
+  meqs       MEQS?
 
   @@map("request_voucher")
 }
 
 model RVItem {
   id      String @id @default(uuid())
+  rv_id   String
+  rv      RV     @relation(fields: [rv_id], references: [id], onDelete: Restrict)
   item_id String
   item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
 
@@ -404,29 +440,37 @@ model SPR {
   id                String         @id @default(uuid())
   spr_number        String         @unique
   date_requested    DateTime
-  canvass_id        String
+  canvass_id        String         @unique
   canvass           Canvass        @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
   vehicle_id        String
   vehicle           Vehicle        @relation(fields: [vehicle_id], references: [id], onDelete: Restrict)
   classification_id String
   classification    Classification @relation(fields: [classification_id], references: [id], onDelete: Restrict)
   supervisor_id     String
-  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict)
-  is_cancelled      Boolean
+  supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
+  status            Int
+  canceller_id      String
+  canceller         Employee       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
 
   spr_approvers SPRApprover[]
+  spr_items     SPRItem[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
+  meqs       MEQS?
 
   @@map("spare_parts_request")
 }
 
 model SPRItem {
   id      String @id @default(uuid())
+  spr_id  String
+  spr     SPR    @relation(fields: [spr_id], references: [id], onDelete: Restrict)
   item_id String
   item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
 
@@ -458,26 +502,37 @@ model SPRApprover {
 
 model MEQS {
   id             String   @id @default(uuid())
-  canvass_id     String
-  canvass        Canvass  @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  jo_id          String?  @unique
+  jo             JO?      @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  rv_id          String?  @unique
+  rv             RV?      @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  spr_id         String?  @unique
+  spr            SPR?     @relation(fields: [spr_id], references: [id], onDelete: Restrict)
   meqs_number    String
   reference_type Int
   meqs_date      DateTime
   purpose        String
-  is_cancelled   Boolean
+  status         Int
+  canceller_id   String
+  canceller      Employee @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
 
   meqs_approvers MEQSApprover[]
-  pos            PO[]
+  meqs_items     MEQSItem[]
+  po             PO?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
+  Canvass    Canvass? @relation(fields: [canvassId], references: [id])
+  canvassId  String?  @unique
 
   @@map("material_equipment_quotation_summary")
 }
 
 model MEQSItem {
   id      String @id @default(uuid())
+  meqs_id String
+  meqs    MEQS   @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
   item_id String
   item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
 
@@ -509,15 +564,20 @@ model MEQSApprover {
 
 model PO {
   id            String   @id @default(uuid())
-  meqs_id       String
+  meqs_id       String   @unique
   meqs          MEQS     @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
   po_number     String
   supplier_id   String
   supplier      Supplier @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
   po_date       DateTime
   payment_terms String
+  purpose       String
+  status        Int
+  canceller_id  String
+  canceller     Employee @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
 
   po_approvers POApprover[]
+  po_items     POItem[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -528,6 +588,8 @@ model PO {
 
 model POItem {
   id      String @id @default(uuid())
+  po_id   String
+  po      PO     @relation(fields: [po_id], references: [id], onDelete: Restrict)
   item_id String
   item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
 

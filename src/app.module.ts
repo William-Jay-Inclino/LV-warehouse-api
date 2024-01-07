@@ -4,6 +4,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BrandModule } from './brand/brand.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
+import { SeederModule } from './prisma/seeder/seeder.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     BrandModule,
     PrismaModule,
+    CommonModule,
+    SeederModule,
   ],
 })
 export class AppModule {}
