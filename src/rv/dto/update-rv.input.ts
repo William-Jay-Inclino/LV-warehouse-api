@@ -7,33 +7,33 @@ import { CreateItemInput } from 'src/item/dto/create-item.input';
 @InputType()
 export class UpdateRvInput extends PartialType(CreateRvInput) {
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   canvass_id?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   supervisor_id?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   classification_id?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   date_requested?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
   work_order_no?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
   work_order_date?: string;
@@ -45,27 +45,27 @@ export class UpdateRvInput extends PartialType(CreateRvInput) {
   @Type(() => CreateItemInput)
   items: CreateItemInput[];
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   purpose?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsString()
   @IsOptional()
   notes?: string;
 
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   @IsInt()
   @IsNotEmpty()
   status?: number;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   canceller_id?: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
   requested_by_id?: string;

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CanvassService } from './canvass.service';
 import { CanvassResolver } from './canvass.resolver';
-import { CommonService } from 'src/__common__/common.service';
+import { CommonPurchasingService } from 'src/__common__/common.purchasing.service';
 
 @Module({
-  providers: [CanvassResolver, CanvassService, CommonService],
+  providers: [CanvassResolver, CanvassService, CommonPurchasingService],
 })
 export class CanvassModule {}

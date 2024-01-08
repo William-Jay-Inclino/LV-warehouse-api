@@ -21,11 +21,11 @@ export class RVApprover {
     @Field(() => RV)
     rv: RV
     
-    @Field(() => String)
-    date_approval: string
+    @Field(() => String, {nullable: true})
+    date_approval: string | null
     
-    @Field(() => String)
-    notes: string 
+    @Field(() => String, {nullable: true})
+    notes: string | null
 
     @Field(() => Int)
     status: number

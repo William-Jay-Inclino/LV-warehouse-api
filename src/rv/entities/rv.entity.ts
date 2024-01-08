@@ -35,31 +35,31 @@ export class RV {
   @Field(() => String)
   date_requested: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   work_order_no: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   work_order_date: string;
 
   @Field(() => [RVItem])
   rv_items: RVItem[];
 
   @Field(() => [RVApprover])
-  approvers: RVApprover[];
+  rv_approvers: RVApprover[];
 
   @Field(() => String)
   purpose: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   notes: string;
 
   @Field(() => Int)
   status: number
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   canceller_id: string;
 
-  @Field(() => Employee)
+  @Field(() => Employee, {nullable: true})
   canceller: Employee;
 
   @Field(() => String)

@@ -22,10 +22,10 @@ export class CreateCanvassInput {
   @IsString()
   purpose: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsString()
   @IsOptional()
-  notes: string;
+  notes?: string | null;
 
   @Field(() => String)
   @IsNotEmpty()

@@ -71,8 +71,8 @@ type RVApprover {
   approver: Employee!
   rv_id: String!
   rv: RV!
-  date_approval: String!
-  notes: String!
+  date_approval: String
+  notes: String
   status: Int!
   label: String!
   order: Int!
@@ -88,15 +88,15 @@ type RV {
   classification: Classification!
   rv_number: String!
   date_requested: String!
-  work_order_no: String!
-  work_order_date: String!
+  work_order_no: String
+  work_order_date: String
   rv_items: [RVItem!]!
-  approvers: [RVApprover!]!
+  rv_approvers: [RVApprover!]!
   purpose: String!
-  notes: String!
+  notes: String
   status: Int!
-  canceller_id: String!
-  canceller: Employee!
+  canceller_id: String
+  canceller: Employee
   requested_by_id: String!
   requested_by: Employee!
 }
@@ -136,7 +136,7 @@ input CreateCanvassInput {
   rc_number: String!
   date_requested: String!
   purpose: String!
-  notes: String!
+  notes: String
   requested_by_id: String!
   noted_by_id: String!
   items: [CreateItemInput!]!
@@ -165,12 +165,12 @@ input CreateRvInput {
   classification_id: String!
   rv_number: String!
   date_requested: String!
-  work_order_no: String!
-  work_order_date: String!
+  work_order_no: String
+  work_order_date: String
   items: [CreateItemInput!]!
   approvers: [CreateRvApproverInput!]!
   purpose: String!
-  notes: String!
+  notes: String
   status: Int!
   requested_by_id: String!
 }
@@ -183,18 +183,18 @@ input CreateRvApproverInput {
 }
 
 input UpdateRvInput {
-  canvass_id: String!
-  supervisor_id: String!
-  classification_id: String!
+  canvass_id: String
+  supervisor_id: String
+  classification_id: String
   rv_number: String
-  date_requested: String!
-  work_order_no: String!
-  work_order_date: String!
+  date_requested: String
+  work_order_no: String
+  work_order_date: String
   items: [CreateItemInput!]!
   approvers: [CreateRvApproverInput!]
-  purpose: String!
-  notes: String!
-  status: Int!
-  requested_by_id: String!
-  canceller_id: String!
+  purpose: String
+  notes: String
+  status: Int
+  requested_by_id: String
+  canceller_id: String
 }

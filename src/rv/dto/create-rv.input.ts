@@ -33,15 +33,16 @@ export class CreateRvInput {
   @IsDate()
   date_requested: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
-  work_order_no?: string;
+  work_order_no?: string | null;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsOptional()
-  @IsString()
-  work_order_date?: string;
+  @Transform(({ value }) => new Date(value))
+  @IsDate()
+  work_order_date?: string | null;
 
   @Field(() => [CreateItemInput])
   @IsNotEmpty()
@@ -62,10 +63,10 @@ export class CreateRvInput {
   @IsString()
   purpose: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsString()
   @IsOptional()
-  notes?: string;
+  notes?: string | null;
 
   @Field(() => Int)
   @IsInt()

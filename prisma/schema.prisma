@@ -263,6 +263,7 @@ model Canvass {
   requested_by    Employee @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
   noted_by_id     String
   noted_by        Employee @relation(fields: [noted_by_id], references: [id], onDelete: Restrict, name: "notedBy")
+  is_completed    Boolean  @default(false)
 
   jos  JO?
   rvs  RV?
@@ -322,11 +323,12 @@ model JO {
   supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
-  status            Int
+  status            Int            @default(1)
   canceller_id      String?
   canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_completed      Boolean        @default(false)
 
   jo_approvers JOApprover[]
   jo_items     JOItem[]
@@ -386,11 +388,12 @@ model RV {
   supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
-  status            Int
+  status            Int            @default(1)
   canceller_id      String?
   canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_completed      Boolean        @default(false)
 
   rv_approvers RVApprover[]
   rv_items     RVItem[]
@@ -450,11 +453,12 @@ model SPR {
   supervisor        Employee       @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
   purpose           String
   notes             String
-  status            Int
+  status            Int            @default(1)
   canceller_id      String?
   canceller         Employee?      @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
   requested_by_id   String
   requested_by      Employee       @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_completed      Boolean        @default(false)
 
   spr_approvers SPRApprover[]
   spr_items     SPRItem[]
@@ -512,9 +516,10 @@ model MEQS {
   reference_type Int
   meqs_date      DateTime
   purpose        String
-  status         Int
+  status         Int       @default(1)
   canceller_id   String?
   canceller      Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  is_completed   Boolean   @default(false)
 
   meqs_approvers MEQSApprover[]
   meqs_items     MEQSItem[]
@@ -572,9 +577,10 @@ model PO {
   po_date       DateTime
   payment_terms String
   purpose       String
-  status        Int
+  status        Int       @default(1)
   canceller_id  String?
   canceller     Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  is_completed  Boolean   @default(false)
 
   po_approvers POApprover[]
   po_items     POItem[]

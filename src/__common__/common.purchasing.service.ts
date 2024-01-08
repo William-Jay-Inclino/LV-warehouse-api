@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../__prisma__/prisma.service';
-import { CreateItemInput } from 'src/item/dto/create-item.input';
 import { DefaultApprover } from './entities/approver-setting.entity';
+import { CreateItemInput } from 'src/item/dto/create-item.input';
 
 @Injectable()
-export class CommonService {
+export class CommonPurchasingService {
 
     constructor(private readonly prisma: PrismaService) {}
     
@@ -33,8 +33,18 @@ export class CommonService {
       });
   
       if (existingCanvass) {
-        throw new Error(`Canvass with rc_number ${payload.rcNumber} already exists.`);
+        throw new ConflictException(`${payload.table.toUpperCase()} with ${payload.field} ${payload.rcNumber} already exists.`);
       }
+    }
+
+    async getDefaultApprovers(payload: {table: string}): Promise<DefaultApprover[]> {
+
+      return await this.prisma[payload.table].findMany({
+        where: {
+          is_deleted: false
+        }
+      }) as DefaultApprover[]
+
     }
 
     async validateIds(payload: {
@@ -93,13 +103,13 @@ export class CommonService {
       await Promise.all(items.map((item) => this.validateBrandAndUnitExist(item)));
     }
     
-    async validateUserExists(userId: string): Promise<boolean> {
+    private async validateUserExists(userId: string): Promise<boolean> {
       console.log('validateUserExists()', userId)
       const user = await this.prisma.employee.findUnique({ where: { id: userId, is_deleted: false } });
       return !!user;
       }
     
-    async validateBrandAndUnitExist(item: CreateItemInput): Promise<void> {
+    private async validateBrandAndUnitExist(item: CreateItemInput): Promise<void> {
       const brand = await this.prisma.brand.findUnique({ where: { id: item.brand_id, is_deleted: false } });
       const unit = await this.prisma.unit.findUnique({ where: { id: item.unit_id, is_deleted: false } });
   
@@ -111,14 +121,6 @@ export class CommonService {
       }
     }
 
-    async getDefaultApprovers(payload: {table: string}): Promise<DefaultApprover[]> {
 
-      return await this.prisma[payload.table].findMany({
-        where: {
-          is_deleted: false
-        }
-      }) as DefaultApprover[]
-
-    }
 
 }
