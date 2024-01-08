@@ -1,35 +1,43 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { MeqsService } from './meqs.service';
-import { Meq } from './entities/meqs.entity';
-import { CreateMeqInput } from './dto/create-meq.input';
-import { UpdateMeqInput } from './dto/update-meq.input';
+import { MEQS } from './entities/meqs.entity';
+import { CreateMeqsInput } from './dto/create-meqs.input';
+import { UpdateMeqsInput } from './dto/update-meqs.input';
 
-@Resolver(() => Meq)
+@Resolver(() => MEQS)
 export class MeqsResolver {
   constructor(private readonly meqsService: MeqsService) {}
 
-  @Mutation(() => Meq)
-  createMeq(@Args('createMeqInput') createMeqInput: CreateMeqInput) {
+  @Mutation(() => MEQS)
+  createMeq(@Args('input') createMeqInput: CreateMeqsInput) {
     return this.meqsService.create(createMeqInput);
   }
 
-  @Query(() => [Meq], { name: 'meqs' })
-  findAll() {
+  @Query(() => [MEQS])
+  meqs() {
     return this.meqsService.findAll();
   }
 
-  @Query(() => Meq, { name: 'meq' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => MEQS)
+  meq(@Args('id', { type: () => String }) id: string) {
     return this.meqsService.findOne(id);
   }
 
-  @Mutation(() => Meq)
-  updateMeq(@Args('updateMeqInput') updateMeqInput: UpdateMeqInput) {
-    return this.meqsService.update(updateMeqInput.id, updateMeqInput);
+  @Mutation(() => MEQS)
+  updateRv(
+    @Args('id') id: string,
+    @Args('input') updateRvInput: UpdateMeqsInput
+  ) {
+    return this.meqsService.update(id, updateRvInput);
   }
 
-  @Mutation(() => Meq)
-  removeMeq(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => MEQS)
+  removeMeq(@Args('id', { type: () => String }) id: string) {
     return this.meqsService.remove(id);
+  }
+
+  @Query(() => String)
+  meqs_number() {
+    return this.meqsService.findLatestMeqsNumber()
   }
 }

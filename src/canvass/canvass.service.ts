@@ -4,12 +4,11 @@ import { UpdateCanvassInput } from './dto/update-canvass.input';
 import { PrismaService } from 'src/__prisma__/prisma.service';
 import { Canvass } from '@prisma/client';
 import { CommonPurchasingService } from 'src/__common__/common.purchasing.service';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class CanvassService {
 
-  private readonly logger = new Logger(CommonPurchasingService.name);
+  private readonly logger = new Logger(CanvassService.name);
 
   constructor(
     private readonly prisma: PrismaService,

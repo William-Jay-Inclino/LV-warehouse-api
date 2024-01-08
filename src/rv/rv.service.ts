@@ -9,7 +9,7 @@ import { APPROVAL_STATUS } from 'src/__common__/entities';
 @Injectable()
 export class RvService {
 
-  private readonly logger = new Logger(CommonPurchasingService.name);
+  private readonly logger = new Logger(RvService.name);
 
   constructor(
     private readonly prisma: PrismaService,

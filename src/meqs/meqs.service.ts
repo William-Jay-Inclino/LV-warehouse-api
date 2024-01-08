@@ -1,10 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMeqInput } from './dto/create-meq.input';
-import { UpdateMeqInput } from './dto/update-meq.input';
+import { Injectable, Logger } from '@nestjs/common';
+import { CreateMeqsInput } from './dto/create-meqs.input';
+import { UpdateMeqsInput } from './dto/update-meqs.input';
+import { CommonPurchasingService } from 'src/__common__/common.purchasing.service';
+import { PrismaService } from 'src/__prisma__/prisma.service';
 
 @Injectable()
 export class MeqsService {
-  create(createMeqInput: CreateMeqInput) {
+
+  private readonly logger = new Logger(MeqsService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly purchasing: CommonPurchasingService
+  ){}
+
+  create(createMeqsInput: CreateMeqsInput) {
     return 'This action adds a new meq';
   }
 
@@ -12,15 +22,28 @@ export class MeqsService {
     return `This action returns all meqs`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} meq`;
   }
 
-  update(id: number, updateMeqInput: UpdateMeqInput) {
+  update(id: string, updateMeqsInput: UpdateMeqsInput) {
     return `This action updates a #${id} meq`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} meq`;
   }
+
+  async findLatestMeqsNumber(): Promise<string> {
+    try {
+        return await this.purchasing.getLatestRcNumber({
+          table: 'mEQS',
+          field: 'meqs_number'
+        })
+    } catch (error) {
+      Logger.error(error)
+      throw new Error(error); 
+    }
+  }
+
 }
