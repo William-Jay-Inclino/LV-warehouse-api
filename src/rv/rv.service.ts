@@ -134,6 +134,7 @@ export class RvService {
   async findOne(id: string): Promise<RV> {
     return await this.prisma.rV.findUniqueOrThrow({
       include: {
+        classification: true,
         canvass: true,
         supervisor: true,
         canceller: true,
@@ -161,8 +162,69 @@ export class RvService {
     });
   }
 
-  update(id: string, updateRvInput: UpdateRvInput) {
-    return `This action updates a #${id} rv`;
+  async update(id: string, input: UpdateRvInput): Promise<RV> {
+    const transactionResult = await this.prisma.$executeRaw`BEGIN`;
+    
+    try {
+      const existingRV = await this.prisma.rV.findUnique({
+        where: { id },
+        include: { rv_items: { include: { item: true } } },
+      });
+
+      if(!existingRV){
+        throw new NotFoundException(`RV with ID ${id} not found`)
+      }
+
+      // Delete existing canvass_items
+      await this.prisma.rVItem.deleteMany({
+        where: { rv_id: id },
+      });
+
+      // Create new canvass_items based on the provided input
+      const updatedRV = await this.prisma.rV.update({
+        where: { id },
+        data: {
+          date_requested: input.date_requested ? new Date(input.date_requested) : existingRV.date_requested,
+          purpose: input.purpose ?? existingRV.purpose,
+          notes: input.notes ?? existingRV.notes,
+          work_order_no: input.work_order_no ?? existingRV.work_order_no,
+          work_order_date: input.work_order_date ? new Date(input.work_order_date) : existingRV.work_order_date, 
+          status: input.status ?? existingRV.status,
+          classification: { connect: { id: input.classification_id } },
+          canceller: { connect: { id: input.canceller_id } },
+          requested_by: { connect: { id: input.requested_by_id } },
+          supervisor: { connect: { id: input.supervisor_id } },
+          rv_items: {
+            create: input.items?.map((item) => ({
+              item: {
+                create: {
+                  description: item.description,
+                  brand: { connect: { id: item.brand_id } },
+                  unit: { connect: { id: item.unit_id } },
+                  quantity: item.quantity,
+                },
+              },
+            })),
+          },
+        },
+        include: { rv_items: { include: { item: true } } },
+      });
+
+      await this.prisma.$executeRaw`COMMIT`;
+      
+      return await this.findOne(updatedRV.id)
+    } catch (error) {
+      this.logger.error('Error updating rv:', error);
+      
+      // Rollback the transaction on error
+      await this.prisma.$executeRaw`ROLLBACK`;
+
+      if(error instanceof BadRequestException || error instanceof ConflictException || error instanceof NotFoundException) {
+        throw error
+      }
+
+      throw new Error('Could not update rv. Please refresh the page and try again.'); 
+    }
   }
 
   async remove(id: string): Promise<boolean> {

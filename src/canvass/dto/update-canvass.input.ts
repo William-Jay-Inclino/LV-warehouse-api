@@ -1,13 +1,12 @@
 // update-canvass.input.ts
 
-import { InputType, Int, Field, PartialType } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsDate, IsNotEmpty, ValidateNested, IsOptional, IsString } from 'class-validator';
-import { CreateCanvassInput } from './create-canvass.input';
 import { CreateItemInput } from '../../item/dto/create-item.input';
 
 @InputType()
-export class UpdateCanvassInput extends PartialType(CreateCanvassInput) {
+export class UpdateCanvassInput {
 
   // @Field(() => String, { nullable: true })
   // @IsOptional()

@@ -150,7 +150,6 @@ input CreateItemInput {
 }
 
 input UpdateCanvassInput {
-  rc_number: String
   date_requested: String
   purpose: String
   notes: String
@@ -183,18 +182,15 @@ input CreateRvApproverInput {
 }
 
 input UpdateRvInput {
-  canvass_id: String
   supervisor_id: String
   classification_id: String
-  rv_number: String
   date_requested: String
   work_order_no: String
   work_order_date: String
   items: [CreateItemInput!]!
-  approvers: [CreateRvApproverInput!]
   purpose: String
   notes: String
   status: Int
-  requested_by_id: String
   canceller_id: String
+  requested_by_id: String
 }

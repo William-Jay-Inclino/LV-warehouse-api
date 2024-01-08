@@ -137,7 +137,6 @@ export class CanvassService {
       const updatedCanvass = await this.prisma.canvass.update({
         where: { id },
         data: {
-          rc_number: input.rc_number ?? existingCanvass.rc_number,
           date_requested: input.date_requested
             ? new Date(input.date_requested)
             : existingCanvass.date_requested,
