@@ -54,7 +54,7 @@ export class MeqsService {
         throw new BadRequestException(`${table.toUpperCase()} had already been referenced`)
       }
 
-      console.log('creating...')
+      this.logger.log('creating...')
 
       const createdMeqs = await this.prisma.mEQS.create({
         data: {
@@ -106,6 +106,8 @@ export class MeqsService {
       })
 
       await this.prisma.$executeRaw`COMMIT`;
+
+      this.logger.log('meqs successfully created')
 
       return await this.findOne(createdMeqs.id);
     } catch (error) {
@@ -221,8 +223,68 @@ export class MeqsService {
     });
   }
 
-  update(id: string, updateMeqsInput: UpdateMeqsInput) {
-    return `This action updates a #${id} meq`;
+  async update(id: string, input: UpdateMeqsInput): Promise<MEQS> {
+    const transactionResult = await this.prisma.$executeRaw`BEGIN`;
+    
+    try {
+      const existingMEQS = await this.prisma.mEQS.findUnique({
+        where: { id },
+        include: { meqs_items: { include: { item: true } } },
+      });
+
+      if(!existingMEQS){
+        throw new NotFoundException(`MEQS with ID ${id} not found`)
+      }
+
+      // Delete existing meqs_items
+      await this.prisma.mEQSItem.deleteMany({
+        where: { meqs_id: id },
+      });
+
+      const updatedMEQS = await this.prisma.mEQS.update({
+        where: { id },
+        data: {
+          meqs_date: input.meqs_date ? new Date(input.meqs_date) : existingMEQS.meqs_date,
+          purpose: input.purpose ?? existingMEQS.purpose,
+          notes: input.notes ?? existingMEQS.notes,
+          status: input.status ?? existingMEQS.status,
+          meqs_items: {
+            create: input.items.map((item) => ({
+              item: {
+                create: {
+                  description: item.description,
+                  brand: { connect: { id: item.brand_id } },
+                  unit: { connect: { id: item.unit_id } },
+                  quantity: item.quantity,
+                  supplier_items: {
+                    create: item.supplier_items.map( (supplierItem) => ({
+                      price: supplierItem.price,
+                      supplier_id: supplierItem.supplier_id
+                    }))
+                  }
+                },
+              },
+            })),
+          },
+        },
+        include: { meqs_items: { include: { item: true } } },
+      });
+
+      await this.prisma.$executeRaw`COMMIT`;
+      
+      return await this.findOne(updatedMEQS.id)
+    } catch (error) {
+      this.logger.error('Error updating meqs:', error);
+      
+      // Rollback the transaction on error
+      await this.prisma.$executeRaw`ROLLBACK`;
+
+      if(error instanceof BadRequestException || error instanceof ConflictException || error instanceof NotFoundException) {
+        throw error
+      }
+
+      throw new Error('Could not update MEQS. Please refresh the page and try again.'); 
+    }
   }
 
   async remove(id: string): Promise<boolean> {

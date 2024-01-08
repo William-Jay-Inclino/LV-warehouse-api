@@ -62,7 +62,7 @@ type Item {
   quantity: Int!
   created_at: DateTime!
   updated_at: DateTime!
-  supplier_items: [SupplierItem!]!
+  supplier_items: [SupplierItem!]
 }
 
 type CanvassItem {

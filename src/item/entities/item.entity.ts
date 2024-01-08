@@ -33,8 +33,8 @@ export class Item {
   @Field(() => Date)
   updated_at: Date;
 
-  @Field(() => [SupplierItem])
-  supplier_items: SupplierItem[];
+  @Field(() => [SupplierItem], {nullable: true})
+  supplier_items?: SupplierItem[];
 
 }
 

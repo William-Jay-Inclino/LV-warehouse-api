@@ -136,17 +136,15 @@ export class CanvassService {
       const updatedCanvass = await this.prisma.canvass.update({
         where: { id },
         data: {
-          date_requested: input.date_requested
-            ? new Date(input.date_requested)
-            : existingCanvass.date_requested,
+          date_requested: input.date_requested ? new Date(input.date_requested) : existingCanvass.date_requested,
           purpose: input.purpose ?? existingCanvass.purpose,
           notes: input.notes ?? existingCanvass.notes,
-          requested_by: {
-            connect: { id: input.requested_by_id },
-          },
-          noted_by: {
-            connect: { id: input.noted_by_id },
-          },
+          ...(input.requested_by_id
+            ? { requested_by: { connect: { id: input.requested_by_id } } }
+            : { requested_by: { connect: { id: existingCanvass.requested_by_id } } }),
+          ...(input.noted_by_id
+            ? { noted_by: { connect: { id: input.noted_by_id } } }
+            : { noted_by: { connect: { id: existingCanvass.noted_by_id } } }),
           canvass_items: {
             create: input.items?.map((item) => ({
               item: {

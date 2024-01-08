@@ -175,12 +175,11 @@ export class RvService {
         throw new NotFoundException(`RV with ID ${id} not found`)
       }
 
-      // Delete existing canvass_items
+      // Delete existing rv_items
       await this.prisma.rVItem.deleteMany({
         where: { rv_id: id },
       });
 
-      // Create new canvass_items based on the provided input
       const updatedRV = await this.prisma.rV.update({
         where: { id },
         data: {
@@ -188,12 +187,17 @@ export class RvService {
           purpose: input.purpose ?? existingRV.purpose,
           notes: input.notes ?? existingRV.notes,
           work_order_no: input.work_order_no ?? existingRV.work_order_no,
-          work_order_date: input.work_order_date ? new Date(input.work_order_date) : existingRV.work_order_date, 
+          work_order_date: input.work_order_date ? new Date(input.work_order_date) : existingRV.work_order_date,
           status: input.status ?? existingRV.status,
-          classification: { connect: { id: input.classification_id } },
-          canceller: { connect: { id: input.canceller_id } },
-          requested_by: { connect: { id: input.requested_by_id } },
-          supervisor: { connect: { id: input.supervisor_id } },
+          ...(input.classification_id
+            ? { classification: { connect: { id: input.classification_id } } }
+            : { classification: { connect: { id: existingRV.classification_id } } }),
+          ...(input.requested_by_id
+            ? { requested_by: { connect: { id: input.requested_by_id } } }
+            : { requested_by: { connect: { id: existingRV.requested_by_id } } }),
+          ...(input.supervisor_id
+            ? { supervisor: { connect: { id: input.supervisor_id } } }
+            : { supervisor: { connect: { id: existingRV.supervisor_id } } }),
           rv_items: {
             create: input.items?.map((item) => ({
               item: {
@@ -209,6 +213,7 @@ export class RvService {
         },
         include: { rv_items: { include: { item: true } } },
       });
+      
 
       await this.prisma.$executeRaw`COMMIT`;
       
