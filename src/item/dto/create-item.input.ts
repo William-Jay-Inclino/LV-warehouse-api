@@ -1,5 +1,7 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { CreateSupplierItemInput } from './create-supplier-item.input';
 
 @InputType()
 export class CreateItemInput {
@@ -23,5 +25,12 @@ export class CreateItemInput {
   @IsNotEmpty()
   @IsInt()
   quantity: number;
+
+  @Field(() => [CreateSupplierItemInput], {nullable: true})
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSupplierItemInput)
+  supplier_items?: CreateSupplierItemInput[];
 
 }

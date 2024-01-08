@@ -16,6 +16,7 @@ import { MeqsModule } from './meqs/meqs.module';
 import { JoModule } from './jo/jo.module';
 import { SprModule } from './spr/spr.module';
 import { PoModule } from './po/po.module';
+import { SupplierModule } from './supplier/supplier.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PoModule } from './po/po.module';
     JoModule,
     SprModule,
     PoModule,
+    SupplierModule,
   ],
 })
 export class AppModule {}

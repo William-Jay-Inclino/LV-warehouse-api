@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Brand } from 'src/brand/entities/brand.entity';
 import { Unit } from 'src/unit/entities/unit.entity';
+import { SupplierItem } from './supplier-item.entity';
 
 @ObjectType()
 export class Item {
@@ -31,6 +32,9 @@ export class Item {
 
   @Field(() => Date)
   updated_at: Date;
+
+  @Field(() => [SupplierItem])
+  supplier_items: SupplierItem[];
 
 }
 

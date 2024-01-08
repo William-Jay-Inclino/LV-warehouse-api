@@ -26,5 +26,8 @@ export class MEQSItem {
   
     @Field(() => Date)
     updated_at: Date;
+
+    @Field(() => [MEQSItem])
+    meqs_items: MEQSItem[];
     
 }

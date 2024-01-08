@@ -20,17 +20,17 @@ export class CreateMeqsInput {
   @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
-  jo_id: string;
+  jo_id: string | null;
 
   @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
-  rv_id: string;
+  rv_id: string | null;
 
   @Field(() => String, {nullable: true})
   @IsOptional()
   @IsString()
-  spr_id: string;
+  spr_id: string | null;
 
   @Field(() => String)
   @IsNotEmpty()
@@ -57,11 +57,6 @@ export class CreateMeqsInput {
   @IsString()
   @IsOptional()
   notes?: string | null;
-
-  @Field(() => String)
-  @IsNotEmpty()
-  @IsString()
-  requested_by_id: string;
 
   @Field(() => Int)
   @IsInt()

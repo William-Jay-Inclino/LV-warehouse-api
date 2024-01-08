@@ -27,11 +27,6 @@ export class UpdateMeqsInput {
   @IsString()
   canceller_id?: string;
 
-  @Field(() => String, {nullable: true})
-  @IsOptional()
-  @IsString()
-  requested_by_id?: string;
-
   @Field(() => Int, {nullable: true})
   @IsInt()
   @IsOptional()

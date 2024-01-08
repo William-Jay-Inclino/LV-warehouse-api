@@ -258,7 +258,7 @@ export class RvService {
 
   private async isCanvassReferenced(canvassId: string): Promise<boolean> {
 
-    const canvass = await this.prisma.canvass.findUniqueOrThrow({
+    const canvass = await this.prisma.canvass.findUnique({
       select: {
         is_referenced: true
       },

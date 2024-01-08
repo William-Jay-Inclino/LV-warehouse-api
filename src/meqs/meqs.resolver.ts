@@ -9,7 +9,7 @@ export class MeqsResolver {
   constructor(private readonly meqsService: MeqsService) {}
 
   @Mutation(() => MEQS)
-  createMeq(@Args('input') createMeqInput: CreateMeqsInput) {
+  createMeqs(@Args('input') createMeqInput: CreateMeqsInput) {
     return this.meqsService.create(createMeqInput);
   }
 
@@ -24,7 +24,7 @@ export class MeqsResolver {
   }
 
   @Mutation(() => MEQS)
-  updateRv(
+  updateMeqs(
     @Args('id') id: string,
     @Args('input') updateRvInput: UpdateMeqsInput
   ) {
@@ -32,7 +32,7 @@ export class MeqsResolver {
   }
 
   @Mutation(() => MEQS)
-  removeMeq(@Args('id', { type: () => String }) id: string) {
+  removeMeqs(@Args('id', { type: () => String }) id: string) {
     return this.meqsService.remove(id);
   }
 
