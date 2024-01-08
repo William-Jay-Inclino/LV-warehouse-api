@@ -26,5 +26,11 @@ export class Item {
   @Field(() => Int)
   quantity: string;
 
+  @Field(() => Date)
+  created_at: Date;
+
+  @Field(() => Date)
+  updated_at: Date;
+
 }
 

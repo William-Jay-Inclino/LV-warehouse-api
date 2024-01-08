@@ -1,16 +1,16 @@
 
-export const enum DEPARTMENT_STATUS {
+export enum DEPARTMENT_STATUS {
     ACTIVE = 1,
     INACTIVE = 2,
 }
 
-export const enum DIVISION_STATUS {
+export enum DIVISION_STATUS {
     ACTIVE = 1,
     INACTIVE = 2,
 }
 
 
-export const enum EMPLOYEE_POSITION {
+export enum EMPLOYEE_POSITION {
     ADMIN = 1,
     GM = 2,
     AUDIT = 3,
@@ -22,7 +22,7 @@ export const enum EMPLOYEE_POSITION {
     FINANCE = 9,
 }
 
-export const enum APPROVAL_STATUS {
+export enum APPROVAL_STATUS {
     PENDING = 1,
     APPROVED = 2,
     DISAPPROVED = 3,

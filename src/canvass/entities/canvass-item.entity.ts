@@ -20,5 +20,11 @@ export class CanvassItem {
     
     @Field(() => Item)
     item: Item;
+
+    @Field(() => Date)
+    created_at: Date;
+  
+    @Field(() => Date)
+    updated_at: Date;
     
 }

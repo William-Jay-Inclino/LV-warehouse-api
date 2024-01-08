@@ -68,4 +68,13 @@ export class RV {
   @Field(() => Employee)
   requested_by: Employee;
 
+  @Field(() => Boolean)
+  is_referenced: boolean;
+
+  @Field(() => Date)
+  created_at: Date;
+
+  @Field(() => Date)
+  updated_at: Date;
+
 }

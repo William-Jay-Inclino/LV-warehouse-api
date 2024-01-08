@@ -29,9 +29,9 @@ export class RvService {
           field: 'rv_number'
       })
 
-      const isCanvassCompleted = await this.isCanvassCompleted(input.canvass_id)
+      const isCanvassReferenced = await this.isCanvassReferenced(input.canvass_id)
 
-      if(isCanvassCompleted){
+      if(isCanvassReferenced){
         throw new BadRequestException("Canvass had already been referenced")
       }
 
@@ -74,7 +74,7 @@ export class RvService {
       const updatedCanvass = await this.prisma.canvass.update({
         where: { id: input.canvass_id },
         data: {
-          is_completed: true
+          is_referenced: true
         }
       })
       
@@ -256,11 +256,11 @@ export class RvService {
     }
   }
 
-  private async isCanvassCompleted(canvassId: string): Promise<boolean> {
+  private async isCanvassReferenced(canvassId: string): Promise<boolean> {
 
     const canvass = await this.prisma.canvass.findUniqueOrThrow({
       select: {
-        is_completed: true
+        is_referenced: true
       },
       where: {
         id: canvassId,
@@ -272,7 +272,7 @@ export class RvService {
       throw new NotFoundException(`Canvass with ID ${canvassId} not found`)
     }
 
-    return canvass.is_completed
+    return canvass.is_referenced
 
   }
 

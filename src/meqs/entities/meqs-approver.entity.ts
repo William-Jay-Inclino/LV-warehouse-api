@@ -1,10 +1,10 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { RV } from "./rv.entity";
+import { MEQS } from "./meqs.entity";
 import { Employee } from "src/employee/entities/employee.entity";
 
 
 @ObjectType()
-export class RVApprover {
+export class MEQSApprover {
 
     @Field(() => String)
     id: string;
@@ -16,10 +16,10 @@ export class RVApprover {
     approver: Employee
 
     @Field(() => String)
-    rv_id: string
+    meqs_id: string
 
-    @Field(() => RV)
-    rv: RV
+    @Field(() => MEQS)
+    meqs: MEQS
     
     @Field(() => String, {nullable: true})
     date_approval: string | null

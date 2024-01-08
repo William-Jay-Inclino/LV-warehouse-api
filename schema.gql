@@ -101,6 +101,11 @@ type RV {
   requested_by: Employee!
 }
 
+type Meq {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
@@ -110,6 +115,8 @@ type Query {
   rvs: [RV!]!
   rv(id: String!): RV!
   rv_number: String!
+  meqs: [Meq!]!
+  meq(id: Int!): Meq!
 }
 
 type Mutation {
@@ -122,6 +129,9 @@ type Mutation {
   createRv(input: CreateRvInput!): RV!
   updateRv(id: String!, input: UpdateRvInput!): RV!
   removeRv(id: String!): RV!
+  createMeq(createMeqInput: CreateMeqInput!): Meq!
+  updateMeq(updateMeqInput: UpdateMeqInput!): Meq!
+  removeMeq(id: Int!): Meq!
 }
 
 input CreateBrandInput {
@@ -193,4 +203,15 @@ input UpdateRvInput {
   status: Int
   canceller_id: String
   requested_by_id: String
+}
+
+input CreateMeqInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateMeqInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

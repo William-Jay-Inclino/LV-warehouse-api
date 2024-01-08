@@ -12,6 +12,10 @@ import { EmployeeModule } from './employee/employee.module';
 import { UnitModule } from './unit/unit.module';
 import { RvModule } from './rv/rv.module';
 import { ClassificationModule } from './classification/classification.module';
+import { MeqsModule } from './meqs/meqs.module';
+import { JoModule } from './jo/jo.module';
+import { SprModule } from './spr/spr.module';
+import { PoModule } from './po/po.module';
 
 @Module({
   imports: [
@@ -32,6 +36,10 @@ import { ClassificationModule } from './classification/classification.module';
     UnitModule,
     RvModule,
     ClassificationModule,
+    MeqsModule,
+    JoModule,
+    SprModule,
+    PoModule,
   ],
 })
 export class AppModule {}

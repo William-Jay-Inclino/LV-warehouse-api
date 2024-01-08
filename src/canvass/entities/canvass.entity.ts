@@ -34,6 +34,15 @@ export class Canvass {
 
   @Field(() => [CanvassItem])
   canvass_items: CanvassItem[];
+
+  @Field(() => Boolean)
+  is_referenced: boolean;
+
+  @Field(() => Date)
+  created_at: Date;
+
+  @Field(() => Date)
+  updated_at: Date;
 }
 
 
