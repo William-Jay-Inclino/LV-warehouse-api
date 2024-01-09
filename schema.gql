@@ -274,12 +274,6 @@ input CreateItemInput {
   brand_id: String
   unit_id: String!
   quantity: Int!
-  supplier_items: [CreateSupplierItemInput!]
-}
-
-input CreateSupplierItemInput {
-  supplier_id: String!
-  price: Float!
 }
 
 input UpdateCanvassInput {
@@ -337,8 +331,21 @@ input CreateMeqsInput {
   purpose: String!
   notes: String
   status: Int!
-  items: [CreateItemInput!]!
+  items: [CreateItemWithSupplierInput!]!
   approvers: [CreateMeqsApproverInput!]!
+}
+
+input CreateItemWithSupplierInput {
+  description: String!
+  brand_id: String
+  unit_id: String!
+  quantity: Int!
+  supplier_items: [CreateSupplierItemInput!]!
+}
+
+input CreateSupplierItemInput {
+  supplier_id: String!
+  price: Float!
 }
 
 input CreateMeqsApproverInput {
@@ -353,7 +360,7 @@ input UpdateMeqsInput {
   purpose: String
   notes: String
   status: Int
-  items: [CreateItemInput!]
+  items: [CreateItemWithSupplierInput!]
 }
 
 input CreateJoInput {

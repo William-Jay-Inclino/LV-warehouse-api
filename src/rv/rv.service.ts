@@ -32,7 +32,7 @@ export class RvService {
       const isCanvassReferenced = await this.isCanvassReferenced(input.canvass_id)
 
       if(isCanvassReferenced){
-        throw new BadRequestException("Canvass had already been referenced")
+        throw new BadRequestException(`Canvass with id ${input.canvass_id} had already been referenced`)
       }
 
       const createdRv = await this.prisma.rV.create({

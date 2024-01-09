@@ -51,7 +51,7 @@ export class MeqsService {
       const isRequestReferenced = await this.isRequestReferenced({table, rc_id})
 
       if(isRequestReferenced){
-        throw new BadRequestException(`${table.toUpperCase()} had already been referenced`)
+        throw new BadRequestException(`${table.toUpperCase()} with id ${rc_id} had already been referenced`)
       }
 
       this.logger.log('creating...')

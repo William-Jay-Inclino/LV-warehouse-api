@@ -1,10 +1,10 @@
 import { InputType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsDate, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { CreateItemInput } from '../../item/dto/create-item.input';
 import { CreateMeqsApproverInput } from './create-meqs-approver.input';
 import { REFERENCE_TYPES } from '../entities/meqs.enums';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
+import { CreateItemWithSupplierInput } from 'src/item/dto/create-item-with-suppliers.input';
 
 registerEnumType(REFERENCE_TYPES, {
   name: 'REFERENCE_TYPES', 
@@ -63,12 +63,12 @@ export class CreateMeqsInput {
   @IsNotEmpty()
   status: APPROVAL_STATUS;
 
-  @Field(() => [CreateItemInput])
+  @Field(() => [CreateItemWithSupplierInput])
   @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateItemInput)
-  items: CreateItemInput[];
+  @Type(() => CreateItemWithSupplierInput)
+  items: CreateItemWithSupplierInput[];
 
   @Field(() => [CreateMeqsApproverInput])
   @IsNotEmpty()
