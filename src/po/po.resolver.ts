@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PoService } from './po.service';
 import { PO } from './entities/po.entity';
 import { CreatePoInput } from './dto/create-po.input';
@@ -19,17 +19,20 @@ export class PoResolver {
   }
 
   @Query(() => PO, { name: 'po' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', { type: () => String }) id: string) {
     return this.poService.findOne(id);
   }
 
   @Mutation(() => PO)
-  updatePo(@Args('updatePoInput') updatePoInput: UpdatePoInput) {
-    return this.poService.update(updatePoInput.id, updatePoInput);
+  updatePo(
+    @Args('id') id: string,
+    @Args('input') updatePoInput: UpdatePoInput
+  ) {
+    return this.poService.update(id, updatePoInput);
   }
 
   @Mutation(() => PO)
-  removePo(@Args('id', { type: () => Int }) id: number) {
+  removePo(@Args('id', { type: () => String }) id: string) {
     return this.poService.remove(id);
   }
 }

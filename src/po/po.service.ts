@@ -12,15 +12,15 @@ export class PoService {
     return `This action returns all po`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} po`;
   }
 
-  update(id: number, updatePoInput: UpdatePoInput) {
+  update(id: string, updatePoInput: UpdatePoInput) {
     return `This action updates a #${id} po`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} po`;
   }
 }

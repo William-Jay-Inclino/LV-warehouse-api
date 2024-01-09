@@ -22,21 +22,16 @@ export class UpdateMeqsInput {
   @IsOptional()
   notes?: string;
 
-  @Field(() => String, {nullable: true})
-  @IsOptional()
-  @IsString()
-  canceller_id?: string;
-
   @Field(() => Int, {nullable: true})
   @IsInt()
   @IsOptional()
   status?: number;
 
-  @Field(() => [CreateItemInput])
-  @IsNotEmpty()
+  @Field(() => [CreateItemInput], {nullable: true})
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateItemInput)
-  items: CreateItemInput[];
+  items?: CreateItemInput[];
 
 }

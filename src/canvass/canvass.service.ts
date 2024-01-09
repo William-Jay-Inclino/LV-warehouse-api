@@ -127,10 +127,13 @@ export class CanvassService {
         throw new NotFoundException(`Canvass with ID ${id} not found`)
       }
 
-      // Delete existing canvass_items
-      await this.prisma.canvassItem.deleteMany({
-        where: { canvass_id: id },
-      });
+      if(input.items && input.items.length > 0){
+        // Delete existing meqs_items
+        await this.prisma.canvassItem.deleteMany({
+          where: { canvass_id: id },
+        });
+        
+      }
 
       // Create new canvass_items based on the provided input
       const updatedCanvass = await this.prisma.canvass.update({
@@ -139,12 +142,12 @@ export class CanvassService {
           date_requested: input.date_requested ? new Date(input.date_requested) : existingCanvass.date_requested,
           purpose: input.purpose ?? existingCanvass.purpose,
           notes: input.notes ?? existingCanvass.notes,
-          ...(input.requested_by_id
-            ? { requested_by: { connect: { id: input.requested_by_id } } }
-            : { requested_by: { connect: { id: existingCanvass.requested_by_id } } }),
-          ...(input.noted_by_id
-            ? { noted_by: { connect: { id: input.noted_by_id } } }
-            : { noted_by: { connect: { id: existingCanvass.noted_by_id } } }),
+          requested_by: input.requested_by_id
+            ? { connect: { id: input.requested_by_id } }
+            : { connect: { id: existingCanvass.requested_by_id } },
+          noted_by: input.noted_by_id
+            ? { connect: { id: input.noted_by_id } }
+            : { connect: { id: existingCanvass.noted_by_id } },
           canvass_items: {
             create: input.items?.map((item) => ({
               item: {
@@ -160,6 +163,7 @@ export class CanvassService {
         },
         include: { canvass_items: { include: { item: true } } },
       });
+      
 
       await this.prisma.$executeRaw`COMMIT`;
       

@@ -236,10 +236,13 @@ export class MeqsService {
         throw new NotFoundException(`MEQS with ID ${id} not found`)
       }
 
-      // Delete existing meqs_items
-      await this.prisma.mEQSItem.deleteMany({
-        where: { meqs_id: id },
-      });
+      if(input.items && input.items.length > 0){
+
+        // Delete existing meqs_items
+        await this.prisma.mEQSItem.deleteMany({
+          where: { meqs_id: id },
+        });
+      }
 
       const updatedMEQS = await this.prisma.mEQS.update({
         where: { id },
@@ -248,27 +251,58 @@ export class MeqsService {
           purpose: input.purpose ?? existingMEQS.purpose,
           notes: input.notes ?? existingMEQS.notes,
           status: input.status ?? existingMEQS.status,
-          meqs_items: {
-            create: input.items.map((item) => ({
-              item: {
-                create: {
-                  description: item.description,
-                  brand: { connect: { id: item.brand_id } },
-                  unit: { connect: { id: item.unit_id } },
-                  quantity: item.quantity,
-                  supplier_items: {
-                    create: item.supplier_items.map( (supplierItem) => ({
-                      price: supplierItem.price,
-                      supplier_id: supplierItem.supplier_id
-                    }))
-                  }
+          ...(input.items ? {
+            meqs_items: {
+              create: input.items.map((item) => ({
+                item: {
+                  create: {
+                    description: item.description,
+                    brand: { connect: { id: item.brand_id } },
+                    unit: { connect: { id: item.unit_id } },
+                    quantity: item.quantity,
+                    supplier_items: {
+                      create: item.supplier_items.map((supplierItem) => ({
+                        price: supplierItem.price,
+                        supplier_id: supplierItem.supplier_id,
+                      })),
+                    },
+                  },
                 },
-              },
-            })),
-          },
+              })),
+            },
+          } : {}),
         },
         include: { meqs_items: { include: { item: true } } },
       });
+
+      // const updatedMEQS = await this.prisma.mEQS.update({
+      //   where: { id },
+      //   data: {
+      //     meqs_date: input.meqs_date ? new Date(input.meqs_date) : existingMEQS.meqs_date,
+      //     purpose: input.purpose ?? existingMEQS.purpose,
+      //     notes: input.notes ?? existingMEQS.notes,
+      //     status: input.status ?? existingMEQS.status,
+      //     meqs_items: {
+      //       create: input.items.map((item) => ({
+      //         item: {
+      //           create: {
+      //             description: item.description,
+      //             brand: { connect: { id: item.brand_id } },
+      //             unit: { connect: { id: item.unit_id } },
+      //             quantity: item.quantity,
+      //             supplier_items: {
+      //               create: item.supplier_items.map( (supplierItem) => ({
+      //                 price: supplierItem.price,
+      //                 supplier_id: supplierItem.supplier_id
+      //               }))
+      //             }
+      //           },
+      //         },
+      //       })),
+      //     },
+      //   },
+      //   include: { meqs_items: { include: { item: true } } },
+      // });
 
       await this.prisma.$executeRaw`COMMIT`;
       

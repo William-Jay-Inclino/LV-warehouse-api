@@ -1,19 +1,19 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Item } from "src/item/entities/item.entity";
-import { MEQS } from "./meqs.entity";
+import { PO } from "./po.entity";
 
 
 @ObjectType()
-export class MEQSItem {
+export class POItem {
 
     @Field(() => String)
     id: string;
 
     @Field(() => String)
-    meqs_id: string;
+    po_id: string;
 
-    @Field(() => MEQS)
-    meqs: MEQS;
+    @Field(() => PO)
+    pos: PO;
     
     @Field(() => String)
     item_id: string;

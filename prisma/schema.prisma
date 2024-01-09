@@ -230,12 +230,12 @@ model POApproverSetting {
 }
 
 model Item {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   description String
-  brand_id    String
-  brand       Brand  @relation(fields: [brand_id], references: [id], onDelete: Restrict)
+  brand_id    String?
+  brand       Brand?  @relation(fields: [brand_id], references: [id], onDelete: Restrict)
   unit_id     String
-  unit        Unit   @relation(fields: [unit_id], references: [id], onDelete: Restrict)
+  unit        Unit    @relation(fields: [unit_id], references: [id], onDelete: Restrict)
   quantity    Int
 
   canvass_item   CanvassItem?

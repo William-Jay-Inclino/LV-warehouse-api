@@ -39,12 +39,12 @@ export class UpdateRvInput {
   @IsDate()
   work_order_date?: string;
 
-  @Field(() => [CreateItemInput])
-  @IsNotEmpty()
+  @Field(() => [CreateItemInput], {nullable: true})
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateItemInput)
-  items: CreateItemInput[];
+  items?: CreateItemInput[];
 
   @Field(() => String, {nullable: true})
   @IsOptional()
@@ -60,11 +60,6 @@ export class UpdateRvInput {
   @IsInt()
   @IsOptional()
   status?: APPROVAL_STATUS;
-
-  @Field(() => String, {nullable: true})
-  @IsOptional()
-  @IsString()
-  canceller_id?: string;
 
   @Field(() => String, {nullable: true})
   @IsOptional()

@@ -38,11 +38,11 @@ export class UpdateCanvassInput {
   @IsString()
   noted_by_id?: string;
 
-  @Field(() => [CreateItemInput])
-  @IsNotEmpty()
+  @Field(() => [CreateItemInput], {nullable: true})
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateItemInput)
-  items: CreateItemInput[];
+  items?: CreateItemInput[];
 
 }

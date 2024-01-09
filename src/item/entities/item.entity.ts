@@ -12,11 +12,11 @@ export class Item {
   @Field(() => String)
   description: string;
 
-  @Field(() => String)
-  brand_id: string;
+  @Field(() => String, {nullable: true})
+  brand_id: string | null;
 
-  @Field(() => Brand)
-  brand: Brand;
+  @Field(() => Brand, {nullable: true})
+  brand: Brand | null;
 
   @Field(() => String)
   unit_id: string;

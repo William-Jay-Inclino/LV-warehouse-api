@@ -11,10 +11,10 @@ export class CreateItemInput {
   @IsString()
   description: string;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @IsNotEmpty()
   @IsString()
-  brand_id: string;
+  brand_id: string | null;
 
   @Field(() => String)
   @IsNotEmpty()

@@ -55,8 +55,8 @@ type SupplierItem {
 type Item {
   id: String!
   description: String!
-  brand_id: String!
-  brand: Brand!
+  brand_id: String
+  brand: Brand
   unit_id: String!
   unit: Unit!
   quantity: Int!
@@ -180,7 +180,6 @@ type MEQSItem {
   item: Item!
   created_at: DateTime!
   updated_at: DateTime!
-  meqs_items: [MEQSItem!]!
 }
 
 type MEQS {
@@ -221,7 +220,7 @@ type Query {
   meqs_number: String!
   jo(id: Int!): JO!
   spr(id: Int!): SPR!
-  po(id: Int!): PO!
+  po(id: String!): PO!
   supplier(id: Int!): Supplier!
 }
 
@@ -245,8 +244,8 @@ type Mutation {
   updateSpr(updateSprInput: UpdateSprInput!): SPR!
   removeSpr(id: Int!): SPR!
   createPo(createPoInput: CreatePoInput!): PO!
-  updatePo(updatePoInput: UpdatePoInput!): PO!
-  removePo(id: Int!): PO!
+  updatePo(id: String!, input: UpdatePoInput!): PO!
+  removePo(id: String!): PO!
   createSupplier(createSupplierInput: CreateSupplierInput!): Supplier!
   updateSupplier(updateSupplierInput: UpdateSupplierInput!): Supplier!
   removeSupplier(id: Int!): Supplier!
@@ -272,7 +271,7 @@ input CreateCanvassInput {
 
 input CreateItemInput {
   description: String!
-  brand_id: String!
+  brand_id: String
   unit_id: String!
   quantity: Int!
   supplier_items: [CreateSupplierItemInput!]
@@ -289,7 +288,7 @@ input UpdateCanvassInput {
   notes: String
   requested_by_id: String
   noted_by_id: String
-  items: [CreateItemInput!]!
+  items: [CreateItemInput!]
 }
 
 input CreateRvInput {
@@ -321,11 +320,10 @@ input UpdateRvInput {
   date_requested: String
   work_order_no: String
   work_order_date: String
-  items: [CreateItemInput!]!
+  items: [CreateItemInput!]
   purpose: String
   notes: String
   status: Int
-  canceller_id: String
   requested_by_id: String
 }
 
@@ -354,9 +352,8 @@ input UpdateMeqsInput {
   meqs_date: String
   purpose: String
   notes: String
-  canceller_id: String
   status: Int
-  items: [CreateItemInput!]!
+  items: [CreateItemInput!]
 }
 
 input CreateJoInput {
@@ -382,14 +379,32 @@ input UpdateSprInput {
 }
 
 input CreatePoInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  meqs_id: String!
+  po_number: String!
+  supplier_id: Int!
+  po_date: String!
+  payment_terms: String!
+  purpose: String!
+  notes: String
+  status: Int!
+  items: [CreateItemInput!]!
+  approvers: [CreatePoApproverInput!]!
+}
+
+input CreatePoApproverInput {
+  approver_id: String!
+  status: Int!
+  label: String!
+  order: Int!
 }
 
 input UpdatePoInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  po_date: String
+  payment_terms: String
+  purpose: String
+  notes: String
+  status: Int
+  items: [CreateItemInput!]
 }
 
 input CreateSupplierInput {
