@@ -9,17 +9,17 @@ export class PoResolver {
   constructor(private readonly poService: PoService) {}
 
   @Mutation(() => PO)
-  createPo(@Args('createPoInput') createPoInput: CreatePoInput) {
+  createPo(@Args('input') createPoInput: CreatePoInput) {
     return this.poService.create(createPoInput);
   }
 
-  @Query(() => [PO], { name: 'po' })
-  findAll() {
+  @Query(() => [PO])
+  pos() {
     return this.poService.findAll();
   }
 
-  @Query(() => PO, { name: 'po' })
-  findOne(@Args('id', { type: () => String }) id: string) {
+  @Query(() => PO)
+  po(@Args('id', { type: () => String }) id: string) {
     return this.poService.findOne(id);
   }
 
@@ -35,4 +35,10 @@ export class PoResolver {
   removePo(@Args('id', { type: () => String }) id: string) {
     return this.poService.remove(id);
   }
+
+  @Query(() => String)
+  po_number() {
+    return this.poService.findLatestPoNumber()
+  }
+  
 }

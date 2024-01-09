@@ -521,7 +521,7 @@ model MEQS {
 
   meqs_approvers MEQSApprover[]
   meqs_items     MEQSItem[]
-  po             PO?
+  pos            PO[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -565,7 +565,7 @@ model MEQSApprover {
 
 model PO {
   id            String    @id @default(uuid())
-  meqs_id       String    @unique
+  meqs_id       String
   meqs          MEQS      @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
   po_number     String    @unique
   supplier_id   String

@@ -37,7 +37,7 @@ export class CreateMeqsInput {
   @IsString()
   meqs_number: string;
 
-  @Field(() => Int)
+  @Field(() => REFERENCE_TYPES)
   @IsNotEmpty()
   @IsInt()
   reference_type: REFERENCE_TYPES;
@@ -58,7 +58,7 @@ export class CreateMeqsInput {
   @IsOptional()
   notes?: string | null;
 
-  @Field(() => Int)
+  @Field(() => APPROVAL_STATUS)
   @IsInt()
   @IsNotEmpty()
   status: APPROVAL_STATUS;

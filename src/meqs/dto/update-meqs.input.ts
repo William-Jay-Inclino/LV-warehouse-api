@@ -1,7 +1,6 @@
 import { Transform, Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsDate, IsOptional, IsArray, ValidateNested, IsInt } from 'class-validator';
+import { IsString, IsDate, IsOptional, IsArray, ValidateNested, IsInt } from 'class-validator';
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { CreateItemInput } from 'src/item/dto/create-item.input';
 import { CreateItemWithSupplierInput } from 'src/item/dto/create-item-with-suppliers.input';
 
 @InputType()

@@ -73,7 +73,7 @@ export class CreateRvInput {
   @IsOptional()
   notes?: string | null;
 
-  @Field(() => Int)
+  @Field(() => APPROVAL_STATUS)
   @IsInt()
   @IsNotEmpty()
   status: APPROVAL_STATUS;

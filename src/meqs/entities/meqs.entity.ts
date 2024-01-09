@@ -44,7 +44,7 @@ export class MEQS {
   @Field(() => String)
   meqs_number: string;
 
-  @Field(() => Int)
+  @Field(() => REFERENCE_TYPES)
   reference_type: REFERENCE_TYPES;
 
   @Field(() => String)
@@ -56,7 +56,7 @@ export class MEQS {
   @Field(() => String, {nullable: true})
   notes: string | null;
 
-  @Field(() => Int)
+  @Field(() => APPROVAL_STATUS)
   status: APPROVAL_STATUS;
 
   @Field(() => String, {nullable: true})
@@ -71,8 +71,8 @@ export class MEQS {
   @Field(() => [MEQSItem])
   meqs_items: MEQSItem[];
 
-  @Field(() => PO, {nullable: true})
-  po: PO | null;
+  @Field(() => [PO], {nullable: true})
+  pos: PO[];
 
   @Field(() => Boolean)
   is_referenced: boolean;

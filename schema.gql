@@ -21,9 +21,182 @@ type Unit {
   name: String!
 }
 
-type PO {
+type JO {
   """Example field (placeholder)"""
   exampleField: Int!
+}
+
+type RVItem {
+  id: String!
+  rv_id: String!
+  rv: RV!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Classification {
+  id: String!
+  name: String!
+}
+
+type RVApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  rv_id: String!
+  rv: RV!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type RV {
+  id: String!
+  canvass_id: String!
+  canvass: Canvass!
+  supervisor_id: String!
+  supervisor: Employee!
+  classification_id: String
+  classification: Classification
+  rv_number: String!
+  date_requested: String!
+  work_order_no: String
+  work_order_date: String
+  rv_items: [RVItem!]!
+  rv_approvers: [RVApprover!]!
+  purpose: String!
+  notes: String
+  status: Int!
+  canceller_id: String
+  canceller: Employee
+  requested_by_id: String!
+  requested_by: Employee!
+  is_referenced: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type SPR {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type MEQSApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  meqs_id: String!
+  meqs: MEQS!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type MEQSItem {
+  id: String!
+  meqs_id: String!
+  meqs: MEQS!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type MEQS {
+  id: String!
+  jo_id: String
+  jo: JO
+  rv_id: String
+  rv: RV
+  spr_id: String
+  spr: SPR
+  meqs_number: String!
+  reference_type: REFERENCE_TYPES!
+  meqs_date: String!
+  purpose: String!
+  notes: String
+  status: APPROVAL_STATUS!
+  canceller_id: String
+  canceller: Employee
+  meqs_approvers: [MEQSApprover!]!
+  meqs_items: [MEQSItem!]!
+  pos: [PO!]
+  is_referenced: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+enum REFERENCE_TYPES {
+  JO
+  RV
+  SPR
+}
+
+enum APPROVAL_STATUS {
+  PENDING
+  APPROVED
+  DISAPPROVED
+  CANCELLED
+}
+
+type POApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  po_id: String!
+  pos: PO!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type POItem {
+  id: String!
+  po_id: String!
+  pos: PO!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type PO {
+  id: String!
+  meqs_id: String!
+  meqs: MEQS!
+  po_number: String!
+  supplier_id: String!
+  supplier: Supplier!
+  po_date: String!
+  payment_terms: String!
+  purpose: String!
+  notes: String
+  status: APPROVAL_STATUS!
+  canceller_id: String
+  canceller: Employee
+  po_approvers: [POApprover!]!
+  po_items: [POItem!]!
+  created_at: DateTime!
+  updated_at: DateTime!
 }
 
 type Supplier {
@@ -35,11 +208,6 @@ type Supplier {
   created_at: DateTime!
   updated_at: DateTime!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type SupplierItem {
   id: String!
@@ -91,121 +259,6 @@ type Canvass {
   updated_at: DateTime!
 }
 
-type RVItem {
-  id: String!
-  rv_id: String!
-  rv: RV!
-  item_id: String!
-  item: Item!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type Classification {
-  id: String!
-  name: String!
-}
-
-type RVApprover {
-  id: String!
-  approver_id: String!
-  approver: Employee!
-  rv_id: String!
-  rv: RV!
-  date_approval: String
-  notes: String
-  status: Int!
-  label: String!
-  order: Int!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type RV {
-  id: String!
-  canvass_id: String!
-  canvass: Canvass!
-  supervisor_id: String!
-  supervisor: Employee!
-  classification_id: String
-  classification: Classification
-  rv_number: String!
-  date_requested: String!
-  work_order_no: String
-  work_order_date: String
-  rv_items: [RVItem!]!
-  rv_approvers: [RVApprover!]!
-  purpose: String!
-  notes: String
-  status: Int!
-  canceller_id: String
-  canceller: Employee
-  requested_by_id: String!
-  requested_by: Employee!
-  is_referenced: Boolean!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type JO {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type SPR {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type MEQSApprover {
-  id: String!
-  approver_id: String!
-  approver: Employee!
-  meqs_id: String!
-  meqs: MEQS!
-  date_approval: String
-  notes: String
-  status: Int!
-  label: String!
-  order: Int!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type MEQSItem {
-  id: String!
-  meqs_id: String!
-  meqs: MEQS!
-  item_id: String!
-  item: Item!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type MEQS {
-  id: String!
-  jo_id: String
-  jo: JO
-  rv_id: String
-  rv: RV
-  spr_id: String
-  spr: SPR
-  meqs_number: String!
-  reference_type: Int!
-  meqs_date: String!
-  purpose: String!
-  notes: String
-  status: Int!
-  canceller_id: String
-  canceller: Employee
-  meqs_approvers: [MEQSApprover!]!
-  meqs_items: [MEQSItem!]!
-  po: PO
-  is_referenced: Boolean!
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
@@ -220,7 +273,9 @@ type Query {
   meqs_number: String!
   jo(id: Int!): JO!
   spr(id: Int!): SPR!
+  pos: [PO!]!
   po(id: String!): PO!
+  po_number: String!
   supplier(id: Int!): Supplier!
 }
 
@@ -243,7 +298,7 @@ type Mutation {
   createSpr(createSprInput: CreateSprInput!): SPR!
   updateSpr(updateSprInput: UpdateSprInput!): SPR!
   removeSpr(id: Int!): SPR!
-  createPo(createPoInput: CreatePoInput!): PO!
+  createPo(input: CreatePoInput!): PO!
   updatePo(id: String!, input: UpdatePoInput!): PO!
   removePo(id: String!): PO!
   createSupplier(createSupplierInput: CreateSupplierInput!): Supplier!
@@ -297,7 +352,7 @@ input CreateRvInput {
   approvers: [CreateRvApproverInput!]!
   purpose: String!
   notes: String
-  status: Int!
+  status: APPROVAL_STATUS!
   requested_by_id: String!
 }
 
@@ -317,7 +372,7 @@ input UpdateRvInput {
   items: [CreateItemInput!]
   purpose: String
   notes: String
-  status: Int
+  status: APPROVAL_STATUS
   requested_by_id: String
 }
 
@@ -326,11 +381,11 @@ input CreateMeqsInput {
   rv_id: String
   spr_id: String
   meqs_number: String!
-  reference_type: Int!
+  reference_type: REFERENCE_TYPES!
   meqs_date: String!
   purpose: String!
   notes: String
-  status: Int!
+  status: APPROVAL_STATUS!
   items: [CreateItemWithSupplierInput!]!
   approvers: [CreateMeqsApproverInput!]!
 }
@@ -388,13 +443,13 @@ input UpdateSprInput {
 input CreatePoInput {
   meqs_id: String!
   po_number: String!
-  supplier_id: Int!
+  supplier_id: String!
   po_date: String!
   payment_terms: String!
   purpose: String!
   notes: String
   status: Int!
-  items: [CreateItemInput!]!
+  items: [CreateItemWithSupplierInput!]!
   approvers: [CreatePoApproverInput!]!
 }
 
@@ -411,7 +466,7 @@ input UpdatePoInput {
   purpose: String
   notes: String
   status: Int
-  items: [CreateItemInput!]
+  items: [CreateItemWithSupplierInput!]
 }
 
 input CreateSupplierInput {

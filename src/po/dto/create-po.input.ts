@@ -1,9 +1,9 @@
 import { InputType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsDate, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { CreateItemInput } from '../../item/dto/create-item.input';
 import { CreatePoApproverInput } from './create-po-approver.input';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
+import { CreateItemWithSupplierInput } from 'src/item/dto/create-item-with-suppliers.input';
 
 registerEnumType(APPROVAL_STATUS, {
   name: 'APPROVAL_STATUS', 
@@ -22,7 +22,7 @@ export class CreatePoInput {
   @IsString()
   po_number: string;
 
-  @Field(() => Int)
+  @Field(() => String)
   @IsNotEmpty()
   @IsString()
   supplier_id: string;
@@ -53,12 +53,12 @@ export class CreatePoInput {
   @IsNotEmpty()
   status: APPROVAL_STATUS;
 
-  @Field(() => [CreateItemInput])
+  @Field(() => [CreateItemWithSupplierInput])
   @IsNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateItemInput)
-  items: CreateItemInput[];
+  @Type(() => CreateItemWithSupplierInput)
+  items: CreateItemWithSupplierInput[];
 
   @Field(() => [CreatePoApproverInput])
   @IsNotEmpty()

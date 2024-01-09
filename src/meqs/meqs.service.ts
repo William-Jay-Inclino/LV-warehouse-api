@@ -16,7 +16,7 @@ export class MeqsService {
     private readonly purchasing: CommonPurchasingService
   ){}
 
-  async create(input: CreateMeqsInput): Promise<any> {
+  async create(input: CreateMeqsInput): Promise<MEQS> {
     this.logger.log('create()', input)
 
     const transactionResult = await this.prisma.$executeRaw`BEGIN`;
@@ -144,7 +144,7 @@ export class MeqsService {
           }
         },
         canceller: true,
-        po: true,
+        pos: true,
         meqs_items: {
           include: {
             item: {
@@ -194,7 +194,7 @@ export class MeqsService {
           }
         },
         canceller: true,
-        po: true,
+        pos: true,
         meqs_items: {
           include: {
             item: {
