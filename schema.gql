@@ -10,7 +10,7 @@ type Brand {
 type Employee {
   id: String!
   firstname: String!
-  middlename: String!
+  middlename: String
   lastname: String!
   position: Float!
   department_id: String!
@@ -265,6 +265,8 @@ type Query {
   canvasses: [Canvass!]!
   canvass(id: String!): Canvass!
   rc_number: String!
+  employees: [Employee!]!
+  employee(id: Int!): Employee!
   rvs: [RV!]!
   rv(id: String!): RV!
   rv_number: String!
@@ -286,6 +288,9 @@ type Mutation {
   createCanvass(input: CreateCanvassInput!): Canvass!
   updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
   removeCanvass(id: String!): Canvass!
+  createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
+  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
+  removeEmployee(id: Int!): Employee!
   createRv(input: CreateRvInput!): RV!
   updateRv(id: String!, input: UpdateRvInput!): RV!
   removeRv(id: String!): RV!
@@ -338,6 +343,17 @@ input UpdateCanvassInput {
   requested_by_id: String
   noted_by_id: String
   items: [CreateItemInput!]
+}
+
+input CreateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input CreateRvInput {

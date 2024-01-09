@@ -8,7 +8,6 @@ import { CommonModule } from './__common__/common.module';
 import { SeederModule } from './__prisma__/seeder/seeder.module';
 import { CanvassModule } from './canvass/canvass.module';
 import { ItemModule } from './item/item.module';
-import { EmployeeModule } from './employee/employee.module';
 import { UnitModule } from './unit/unit.module';
 import { RvModule } from './rv/rv.module';
 import { ClassificationModule } from './classification/classification.module';
@@ -17,6 +16,7 @@ import { JoModule } from './jo/jo.module';
 import { SprModule } from './spr/spr.module';
 import { PoModule } from './po/po.module';
 import { SupplierModule } from './supplier/supplier.module';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [

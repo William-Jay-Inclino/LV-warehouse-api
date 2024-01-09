@@ -9,8 +9,8 @@ export class Employee {
   @Field(() => String)
   firstname: string;
 
-  @Field(() => String)
-  middlename?: string;
+  @Field(() => String, {nullable: true})
+  middlename?: string | null;
 
   @Field(() => String)
   lastname: string;
