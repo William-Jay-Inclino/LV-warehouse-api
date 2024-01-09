@@ -127,8 +127,8 @@ type RV {
   canvass: Canvass!
   supervisor_id: String!
   supervisor: Employee!
-  classification_id: String!
-  classification: Classification!
+  classification_id: String
+  classification: Classification
   rv_number: String!
   date_requested: String!
   work_order_no: String
@@ -294,7 +294,7 @@ input UpdateCanvassInput {
 input CreateRvInput {
   canvass_id: String!
   supervisor_id: String!
-  classification_id: String!
+  classification_id: String
   rv_number: String!
   date_requested: String!
   work_order_no: String

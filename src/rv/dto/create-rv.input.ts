@@ -22,10 +22,10 @@ export class CreateRvInput {
   @IsString()
   supervisor_id: string;
 
-  @Field(() => String)
-  @IsNotEmpty()
+  @Field(() => String, {nullable: true})
+  @IsOptional()
   @IsString()
-  classification_id: string;
+  classification_id?: string | null;
 
   @Field(() => String)
   @IsNotEmpty()

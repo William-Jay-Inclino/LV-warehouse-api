@@ -45,7 +45,6 @@ export class RvService {
           work_order_no: input.work_order_no || null,
           work_order_date: input.work_order_date ? new Date(input.work_order_date) : null,
           canvass: { connect: { id: input.canvass_id } },
-          classification: { connect: { id: input.classification_id } },
           requested_by: { connect: { id: input.requested_by_id } },
           supervisor: { connect: { id: input.supervisor_id } },
           rv_items: {
@@ -193,9 +192,11 @@ export class RvService {
           work_order_no: input.work_order_no ?? existingRV.work_order_no,
           work_order_date: input.work_order_date ? new Date(input.work_order_date) : existingRV.work_order_date,
           status: input.status ?? existingRV.status,
-          classification: input.classification_id
+          classification: input.classification_id // since classification is set to nullable
             ? { connect: { id: input.classification_id } }
-            : { connect: { id: existingRV.classification_id } },
+            : existingRV.classification_id
+              ? { connect: { id: existingRV.classification_id } }
+              : undefined,
           requested_by: input.requested_by_id
             ? { connect: { id: input.requested_by_id } }
             : { connect: { id: existingRV.requested_by_id } },
@@ -217,41 +218,6 @@ export class RvService {
         },
         include: { rv_items: { include: { item: true } } },
       });
-
-      // const updatedRV = await this.prisma.rV.update({
-      //   where: { id },
-      //   data: {
-      //     date_requested: input.date_requested ? new Date(input.date_requested) : existingRV.date_requested,
-      //     purpose: input.purpose ?? existingRV.purpose,
-      //     notes: input.notes ?? existingRV.notes,
-      //     work_order_no: input.work_order_no ?? existingRV.work_order_no,
-      //     work_order_date: input.work_order_date ? new Date(input.work_order_date) : existingRV.work_order_date,
-      //     status: input.status ?? existingRV.status,
-      //     ...(input.classification_id
-      //       ? { classification: { connect: { id: input.classification_id } } }
-      //       : { classification: { connect: { id: existingRV.classification_id } } }),
-      //     ...(input.requested_by_id
-      //       ? { requested_by: { connect: { id: input.requested_by_id } } }
-      //       : { requested_by: { connect: { id: existingRV.requested_by_id } } }),
-      //     ...(input.supervisor_id
-      //       ? { supervisor: { connect: { id: input.supervisor_id } } }
-      //       : { supervisor: { connect: { id: existingRV.supervisor_id } } }),
-      //     rv_items: {
-      //       create: input.items?.map((item) => ({
-      //         item: {
-      //           create: {
-      //             description: item.description,
-      //             brand: { connect: { id: item.brand_id } },
-      //             unit: { connect: { id: item.unit_id } },
-      //             quantity: item.quantity,
-      //           },
-      //         },
-      //       })),
-      //     },
-      //   },
-      //   include: { rv_items: { include: { item: true } } },
-      // });
-      
 
       await this.prisma.$executeRaw`COMMIT`;
       

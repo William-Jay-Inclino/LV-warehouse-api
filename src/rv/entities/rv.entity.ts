@@ -23,11 +23,11 @@ export class RV {
   @Field(() => Employee)
   supervisor: Employee;
 
-  @Field(() => String)
-  classification_id: string;
+  @Field(() => String, {nullable: true})
+  classification_id: string | null;
 
-  @Field(() => Classification)
-  classification: Classification
+  @Field(() => Classification, {nullable: true})
+  classification: Classification | null
 
   @Field(() => String)
   rv_number: string;
