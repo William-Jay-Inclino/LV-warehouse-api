@@ -259,6 +259,11 @@ type Canvass {
   updated_at: DateTime!
 }
 
+type RemoveCanvassResponse {
+  success: Boolean!
+  msg: String!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
@@ -289,7 +294,7 @@ type Mutation {
   removeBrand(id: String!): Boolean!
   createCanvass(input: CreateCanvassInput!): Canvass!
   updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
-  removeCanvass(id: String!): Canvass!
+  removeCanvass(id: String!): RemoveCanvassResponse!
   createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
   removeEmployee(id: Int!): Employee!

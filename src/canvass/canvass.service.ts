@@ -181,11 +181,18 @@ export class CanvassService {
     }
   }
 
-  async remove(id: string): Promise<boolean> {
+  async remove(id: string): Promise<{success: boolean, msg: string}> {
         
     const item = await this.prisma.canvass.findUniqueOrThrow({
         where: {id, is_deleted: false}
     })
+
+    if(item.is_referenced){
+      return {
+        success: false,
+        msg: "Unable to delete this canvass because it is referenced in either RV, SPR, or JO"
+      }
+    }
     
     await this.prisma.canvass.update({
         where: { id },
@@ -194,7 +201,10 @@ export class CanvassService {
         }
     })
 
-    return true
+    return {
+      success: true,
+      msg: "Canvass successfully deleted"
+    }
 
   }
 
