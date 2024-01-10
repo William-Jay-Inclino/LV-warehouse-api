@@ -135,7 +135,6 @@ export class CanvassService {
         
       }
 
-      // Create new canvass_items based on the provided input
       const updatedCanvass = await this.prisma.canvass.update({
         where: { id },
         data: {
@@ -153,7 +152,7 @@ export class CanvassService {
               item: {
                 create: {
                   description: item.description,
-                  brand: { connect: { id: item.brand_id } },
+                  brand: item.brand_id ? { connect: { id: item.brand_id } } : undefined,
                   unit: { connect: { id: item.unit_id } },
                   quantity: item.quantity,
                 },
