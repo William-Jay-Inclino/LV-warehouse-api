@@ -267,6 +267,8 @@ type Query {
   rc_number: String!
   employees: [Employee!]!
   employee(id: Int!): Employee!
+  units: [Unit!]!
+  unit(id: String!): Unit!
   rvs: [RV!]!
   rv(id: String!): RV!
   rv_number: String!
@@ -291,6 +293,9 @@ type Mutation {
   createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
   removeEmployee(id: Int!): Employee!
+  createUnit(data: CreateUnitInput!): Unit!
+  updateUnit(id: String!, data: UpdateUnitInput!): Unit!
+  removeUnit(id: String!): Boolean!
   createRv(input: CreateRvInput!): RV!
   updateRv(id: String!, input: UpdateRvInput!): RV!
   removeRv(id: String!): RV!
@@ -351,6 +356,17 @@ input CreateEmployeeInput {
 }
 
 input UpdateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateUnitInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUnitInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
