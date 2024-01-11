@@ -52,7 +52,7 @@ export class RvService {
               item: {
                 create: {
                   description: item.description,
-                  brand: { connect: { id: item.brand_id } },
+                  brand: item.brand_id ? { connect: { id: item.brand_id } } : undefined,
                   unit: { connect: { id: item.unit_id } },
                   quantity: item.quantity,
                 },
@@ -222,7 +222,7 @@ export class RvService {
               item: {
                 create: {
                   description: item.description,
-                  brand: { connect: { id: item.brand_id } },
+                  brand: item.brand_id ? { connect: { id: item.brand_id } } : undefined,
                   unit: { connect: { id: item.unit_id } },
                   quantity: item.quantity,
                 },

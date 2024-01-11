@@ -56,7 +56,7 @@ export class UpdateRvInput {
   @IsOptional()
   notes?: string;
 
-  @Field(() => APPROVAL_STATUS, {nullable: true})
+  @Field(() => Int, {nullable: true})
   @IsInt()
   @IsOptional()
   status?: APPROVAL_STATUS;

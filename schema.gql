@@ -400,7 +400,7 @@ input CreateRvInput {
   approvers: [CreateRvApproverInput!]!
   purpose: String!
   notes: String
-  status: APPROVAL_STATUS!
+  status: Int!
   requested_by_id: String!
 }
 
@@ -420,7 +420,7 @@ input UpdateRvInput {
   items: [CreateItemInput!]
   purpose: String
   notes: String
-  status: APPROVAL_STATUS
+  status: Int
   requested_by_id: String
 }
 
@@ -433,7 +433,7 @@ input CreateMeqsInput {
   meqs_date: String!
   purpose: String!
   notes: String
-  status: APPROVAL_STATUS!
+  status: Int!
   items: [CreateItemWithSupplierInput!]!
   approvers: [CreateMeqsApproverInput!]!
 }
