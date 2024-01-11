@@ -5,10 +5,6 @@ import { CreateItemInput } from '../../item/dto/create-item.input';
 import { CreateRvApproverInput } from './create-rv-approver.input';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
 
-registerEnumType(APPROVAL_STATUS, {
-  name: 'APPROVAL_STATUS', 
-});
-
 @InputType()
 export class CreateRvInput {
 

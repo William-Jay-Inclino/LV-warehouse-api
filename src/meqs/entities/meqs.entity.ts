@@ -9,14 +9,6 @@ import { MEQSApprover } from './meqs-approver.entity';
 import { MEQSItem } from './meqs-item.entity';
 import { PO } from 'src/po/entities/po.entity';
 
-registerEnumType(REFERENCE_TYPES, {
-  name: 'REFERENCE_TYPES', 
-});
-
-registerEnumType(APPROVAL_STATUS, {
-  name: 'APPROVAL_STATUS', 
-});
-
 @ObjectType()
 export class MEQS {
 
@@ -44,7 +36,7 @@ export class MEQS {
   @Field(() => String)
   meqs_number: string;
 
-  @Field(() => REFERENCE_TYPES)
+  @Field(() => Int)
   reference_type: REFERENCE_TYPES;
 
   @Field(() => String)
@@ -56,7 +48,7 @@ export class MEQS {
   @Field(() => String, {nullable: true})
   notes: string | null;
 
-  @Field(() => APPROVAL_STATUS)
+  @Field(() => Int)
   status: APPROVAL_STATUS;
 
   @Field(() => String, {nullable: true})

@@ -118,6 +118,9 @@ export class RvService {
         rv_approvers: {
           include: {
             approver: true 
+          },
+          orderBy: {
+            order: 'asc'
           }
         }
       },
@@ -165,6 +168,9 @@ export class RvService {
         rv_approvers: {
           include: {
             approver: true 
+          },
+          orderBy: {
+            order: 'asc'
           }
         }
       },

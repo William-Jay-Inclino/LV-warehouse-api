@@ -82,7 +82,7 @@ type RV {
   rv_approvers: [RVApprover!]!
   purpose: String!
   notes: String
-  status: APPROVAL_STATUS!
+  status: Int!
   canceller_id: String
   canceller: Employee
   requested_by_id: String!
@@ -90,13 +90,6 @@ type RV {
   is_referenced: Boolean!
   created_at: DateTime!
   updated_at: DateTime!
-}
-
-enum APPROVAL_STATUS {
-  PENDING
-  APPROVED
-  DISAPPROVED
-  CANCELLED
 }
 
 type SPR {
@@ -138,11 +131,11 @@ type MEQS {
   spr_id: String
   spr: SPR
   meqs_number: String!
-  reference_type: REFERENCE_TYPES!
+  reference_type: Int!
   meqs_date: String!
   purpose: String!
   notes: String
-  status: APPROVAL_STATUS!
+  status: Int!
   canceller_id: String
   canceller: Employee
   meqs_approvers: [MEQSApprover!]!
@@ -151,12 +144,6 @@ type MEQS {
   is_referenced: Boolean!
   created_at: DateTime!
   updated_at: DateTime!
-}
-
-enum REFERENCE_TYPES {
-  JO
-  RV
-  SPR
 }
 
 type POApprover {
@@ -195,7 +182,7 @@ type PO {
   payment_terms: String!
   purpose: String!
   notes: String
-  status: APPROVAL_STATUS!
+  status: Int!
   canceller_id: String
   canceller: Employee
   po_approvers: [POApprover!]!
@@ -429,7 +416,7 @@ input CreateMeqsInput {
   rv_id: String
   spr_id: String
   meqs_number: String!
-  reference_type: REFERENCE_TYPES!
+  reference_type: Int!
   meqs_date: String!
   purpose: String!
   notes: String

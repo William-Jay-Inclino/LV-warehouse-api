@@ -6,10 +6,6 @@ import { Supplier } from 'src/supplier/entities/supplier.entity';
 import { POApprover } from './po-approver.entity';
 import { POItem } from './po-item.entity';
 
-registerEnumType(APPROVAL_STATUS, {
-  name: 'APPROVAL_STATUS', 
-});
-
 @ObjectType()
 export class PO {
 
@@ -43,7 +39,7 @@ export class PO {
   @Field(() => String, {nullable: true})
   notes: string | null;
 
-  @Field(() => APPROVAL_STATUS)
+  @Field(() => Int)
   status: APPROVAL_STATUS;
 
   @Field(() => String, {nullable: true})

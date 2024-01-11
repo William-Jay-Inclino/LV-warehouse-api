@@ -6,14 +6,6 @@ import { REFERENCE_TYPES } from '../entities/meqs.enums';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
 import { CreateItemWithSupplierInput } from 'src/item/dto/create-item-with-suppliers.input';
 
-registerEnumType(REFERENCE_TYPES, {
-  name: 'REFERENCE_TYPES', 
-});
-
-registerEnumType(APPROVAL_STATUS, {
-  name: 'APPROVAL_STATUS', 
-});
-
 @InputType()
 export class CreateMeqsInput {
 
@@ -37,7 +29,7 @@ export class CreateMeqsInput {
   @IsString()
   meqs_number: string;
 
-  @Field(() => REFERENCE_TYPES)
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
   reference_type: REFERENCE_TYPES;
