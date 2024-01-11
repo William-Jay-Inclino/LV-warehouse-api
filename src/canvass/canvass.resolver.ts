@@ -20,6 +20,7 @@ export class CanvassResolver {
 
   @Query(() => Canvass)
   canvass(@Args('id', { type: () => String }) id: string) {
+    console.log('canvass')
     return this.canvassService.findOne(id);
   }
 

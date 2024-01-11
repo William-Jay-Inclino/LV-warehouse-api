@@ -77,7 +77,7 @@ type RV {
   rv_approvers: [RVApprover!]!
   purpose: String!
   notes: String
-  status: Int!
+  status: APPROVAL_STATUS!
   canceller_id: String
   canceller: Employee
   requested_by_id: String!
@@ -85,6 +85,13 @@ type RV {
   is_referenced: Boolean!
   created_at: DateTime!
   updated_at: DateTime!
+}
+
+enum APPROVAL_STATUS {
+  PENDING
+  APPROVED
+  DISAPPROVED
+  CANCELLED
 }
 
 type SPR {
@@ -145,13 +152,6 @@ enum REFERENCE_TYPES {
   JO
   RV
   SPR
-}
-
-enum APPROVAL_STATUS {
-  PENDING
-  APPROVED
-  DISAPPROVED
-  CANCELLED
 }
 
 type POApprover {
@@ -264,6 +264,16 @@ type RemoveCanvassResponse {
   msg: String!
 }
 
+type RVApproverSetting {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
@@ -275,6 +285,7 @@ type Query {
   units: [Unit!]!
   unit(id: String!): Unit!
   rvs: [RV!]!
+  default_rv_approvers: [RVApproverSetting!]!
   rv(id: String!): RV!
   rv_number: String!
   meqs: [MEQS!]!

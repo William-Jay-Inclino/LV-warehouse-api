@@ -1,9 +1,14 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entities/employee.entity';
 import { RVItem } from './rv-item.entity';
 import { Canvass } from 'src/canvass/entities/canvass.entity';
 import { Classification } from 'src/classification/entities/classification.entity';
 import { RVApprover } from './rv-approver.entity';
+import { APPROVAL_STATUS } from 'src/__common__/entities';
+
+registerEnumType(APPROVAL_STATUS, {
+  name: 'APPROVAL_STATUS', 
+});
 
 @ObjectType()
 export class RV {
@@ -53,8 +58,8 @@ export class RV {
   @Field(() => String, {nullable: true})
   notes: string;
 
-  @Field(() => Int)
-  status: number
+  @Field(() => APPROVAL_STATUS)
+  status: APPROVAL_STATUS
 
   @Field(() => String, {nullable: true})
   canceller_id: string;

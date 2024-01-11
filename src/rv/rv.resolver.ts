@@ -3,6 +3,7 @@ import { RvService } from './rv.service';
 import { RV } from './entities/rv.entity';
 import { CreateRvInput } from './dto/create-rv.input';
 import { UpdateRvInput } from './dto/update-rv.input';
+import { RVApproverSetting } from './entities/rv-approver-setting.entity';
 
 @Resolver(() => RV)
 export class RvResolver {
@@ -16,6 +17,11 @@ export class RvResolver {
   @Query(() => [RV])
   rvs() {
     return this.rvService.findAll();
+  }
+
+  @Query(() => [RVApproverSetting])
+  default_rv_approvers() {
+    return this.rvService.findAllDefaultRvApprovers();
   }
 
   @Query(() => RV)

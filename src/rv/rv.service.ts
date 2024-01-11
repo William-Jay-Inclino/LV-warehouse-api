@@ -3,7 +3,7 @@ import { CreateRvInput } from './dto/create-rv.input';
 import { UpdateRvInput } from './dto/update-rv.input';
 import { CommonPurchasingService } from 'src/__common__/common.purchasing.service';
 import { PrismaService } from 'src/__prisma__/prisma.service';
-import { RV } from '@prisma/client';
+import { RV, RVApproverSetting } from '@prisma/client';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
 
 @Injectable()
@@ -128,6 +128,20 @@ export class RvService {
         rv_number: 'desc'
       }
     });
+  }
+
+  async findAllDefaultRvApprovers(): Promise<RVApproverSetting[]> {
+    return await this.prisma.rVApproverSetting.findMany({
+      include: {
+        approver: true
+      },
+      orderBy: {
+        order: 'asc'
+      },
+      where: {
+        is_deleted: false
+      }
+    })
   }
 
   async findOne(id: string): Promise<RV> {
