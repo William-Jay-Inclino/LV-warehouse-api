@@ -1,3 +1,4 @@
+import { Field, ObjectType } from "@nestjs/graphql";
 import { APPROVAL_STATUS, DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, REQUEST_TYPES } from "./common.enums";
 
 
@@ -312,3 +313,11 @@ export interface PO {
 }
 
 
+@ObjectType()
+export class RemoveResponse {
+  @Field(() => Boolean)
+  success: boolean;
+
+  @Field(() => String)
+  msg: string;
+}

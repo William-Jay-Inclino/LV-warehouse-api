@@ -250,11 +250,18 @@ export class RvService {
     }
   }
 
-  async remove(id: string): Promise<boolean> {
+  async remove(id: string): Promise<{success: boolean, msg: string}> {
         
     const item = await this.prisma.rV.findUniqueOrThrow({
         where: {id, is_deleted: false}
     })
+
+    if(item.is_referenced){
+      return {
+        success: false,
+        msg: "Unable to delete RV because it is referenced in MEQS"
+      }
+    }
     
     await this.prisma.rV.update({
         where: { id },
@@ -263,7 +270,10 @@ export class RvService {
         }
     })
 
-    return true
+    return {
+      success: true,
+      msg: "Canvass successfully deleted"
+    }
 
   }
 

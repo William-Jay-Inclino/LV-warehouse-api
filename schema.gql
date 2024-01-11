@@ -7,6 +7,11 @@ type Brand {
   name: String!
 }
 
+type RemoveResponse {
+  success: Boolean!
+  msg: String!
+}
+
 type Employee {
   id: String!
   firstname: String!
@@ -259,11 +264,6 @@ type Canvass {
   updated_at: DateTime!
 }
 
-type RemoveCanvassResponse {
-  success: Boolean!
-  msg: String!
-}
-
 type RVApproverSetting {
   id: String!
   approver_id: String!
@@ -305,7 +305,7 @@ type Mutation {
   removeBrand(id: String!): Boolean!
   createCanvass(input: CreateCanvassInput!): Canvass!
   updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
-  removeCanvass(id: String!): RemoveCanvassResponse!
+  removeCanvass(id: String!): RemoveResponse!
   createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
   updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
   removeEmployee(id: Int!): Employee!
@@ -314,7 +314,7 @@ type Mutation {
   removeUnit(id: String!): Boolean!
   createRv(input: CreateRvInput!): RV!
   updateRv(id: String!, input: UpdateRvInput!): RV!
-  removeRv(id: String!): RV!
+  removeRv(id: String!): RemoveResponse!
   createMeqs(input: CreateMeqsInput!): MEQS!
   updateMeqs(id: String!, input: UpdateMeqsInput!): MEQS!
   removeMeqs(id: String!): MEQS!

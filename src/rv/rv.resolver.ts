@@ -4,6 +4,7 @@ import { RV } from './entities/rv.entity';
 import { CreateRvInput } from './dto/create-rv.input';
 import { UpdateRvInput } from './dto/update-rv.input';
 import { RVApproverSetting } from './entities/rv-approver-setting.entity';
+import { RemoveResponse } from 'src/__common__/entities';
 
 @Resolver(() => RV)
 export class RvResolver {
@@ -37,7 +38,7 @@ export class RvResolver {
     return this.rvService.update(id, updateRvInput);
   }
 
-  @Mutation(() => RV)
+  @Mutation(() => RemoveResponse)
   removeRv(@Args('id', { type: () => String }) id: string) {
     return this.rvService.remove(id);
   }

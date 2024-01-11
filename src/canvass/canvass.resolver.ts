@@ -1,8 +1,9 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CanvassService } from './canvass.service';
-import { Canvass, RemoveCanvassResponse } from './entities/canvass.entity';
+import { Canvass } from './entities/canvass.entity';
 import { CreateCanvassInput } from './dto/create-canvass.input';
 import { UpdateCanvassInput } from './dto/update-canvass.input';
+import { RemoveResponse } from 'src/__common__/entities';
 
 @Resolver(() => Canvass)
 export class CanvassResolver {
@@ -32,7 +33,7 @@ export class CanvassResolver {
     return this.canvassService.update(id, updateCanvassInput);
   }
 
-  @Mutation(() => RemoveCanvassResponse)
+  @Mutation(() => RemoveResponse)
   removeCanvass(@Args('id', { type: () => String }) id: string) {
     return this.canvassService.remove(id);
   }
