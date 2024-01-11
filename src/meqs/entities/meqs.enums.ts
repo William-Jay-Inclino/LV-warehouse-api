@@ -1,7 +1,7 @@
 
 
-export enum REFERENCE_TYPES {
-    JO = 1,
-    RV = 2,
+export enum REQUEST_TYPE {
+    RV = 1,
+    JO = 2,
     SPR = 3
 }

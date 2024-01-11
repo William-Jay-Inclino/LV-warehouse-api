@@ -1,8 +1,8 @@
-import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { JO } from 'src/jo/entities/jo.entity';
 import { RV } from 'src/rv/entities/rv.entity';
 import { SPR } from 'src/spr/entities/spr.entity';
-import { REFERENCE_TYPES } from './meqs.enums';
+import { REQUEST_TYPE } from './meqs.enums';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
 import { Employee } from 'src/employee/entities/employee.entity';
 import { MEQSApprover } from './meqs-approver.entity';
@@ -37,7 +37,7 @@ export class MEQS {
   meqs_number: string;
 
   @Field(() => Int)
-  reference_type: REFERENCE_TYPES;
+  request_type: REQUEST_TYPE;
 
   @Field(() => String)
   meqs_date: string;

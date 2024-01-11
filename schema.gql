@@ -131,7 +131,7 @@ type MEQS {
   spr_id: String
   spr: SPR
   meqs_number: String!
-  reference_type: Int!
+  request_type: Int!
   meqs_date: String!
   purpose: String!
   notes: String
@@ -261,6 +261,16 @@ type RVApproverSetting {
   updated_at: DateTime!
 }
 
+type MEQSApproverSetting {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
@@ -276,6 +286,7 @@ type Query {
   rv(id: String!): RV!
   rv_number: String!
   meqs: [MEQS!]!
+  default_meqs_approvers: [MEQSApproverSetting!]!
   meq(id: String!): MEQS!
   meqs_number: String!
   jo(id: Int!): JO!
@@ -283,12 +294,13 @@ type Query {
   pos: [PO!]!
   po(id: String!): PO!
   po_number: String!
-  supplier(id: Int!): Supplier!
+  suppliers: [Supplier!]!
+  supplier(id: String!): Supplier!
 }
 
 type Mutation {
-  createBrand(data: CreateBrandInput!): Brand!
-  updateBrand(id: String!, data: UpdateBrandInput!): Brand!
+  createBrand(input: CreateBrandInput!): Brand!
+  updateBrand(id: String!, input: UpdateBrandInput!): Brand!
   removeBrand(id: String!): Boolean!
   createCanvass(input: CreateCanvassInput!): Canvass!
   updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
@@ -314,9 +326,9 @@ type Mutation {
   createPo(input: CreatePoInput!): PO!
   updatePo(id: String!, input: UpdatePoInput!): PO!
   removePo(id: String!): PO!
-  createSupplier(createSupplierInput: CreateSupplierInput!): Supplier!
-  updateSupplier(updateSupplierInput: UpdateSupplierInput!): Supplier!
-  removeSupplier(id: Int!): Supplier!
+  createSupplier(input: CreateSupplierInput!): Supplier!
+  updateSupplier(id: String!, input: UpdateSupplierInput!): Supplier!
+  removeSupplier(id: String!): Boolean!
 }
 
 input CreateBrandInput {
@@ -416,7 +428,7 @@ input CreateMeqsInput {
   rv_id: String
   spr_id: String
   meqs_number: String!
-  reference_type: Int!
+  request_type: Int!
   meqs_date: String!
   purpose: String!
   notes: String

@@ -273,7 +273,7 @@ export interface MEQS {
     canvass_id: string 
     canvass: Canvass
     meqs_number: string
-    reference_type: REQUEST_TYPES
+    request_type: REQUEST_TYPES
     meqs_date: string
     purpose: string
     is_cancelled: boolean

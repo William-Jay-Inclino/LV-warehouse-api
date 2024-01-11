@@ -3,7 +3,7 @@ import { CreateMeqsInput } from './dto/create-meqs.input';
 import { UpdateMeqsInput } from './dto/update-meqs.input';
 import { CommonPurchasingService } from 'src/__common__/common.purchasing.service';
 import { PrismaService } from 'src/__prisma__/prisma.service';
-import { MEQS } from '@prisma/client';
+import { MEQS, MEQSApproverSetting } from '@prisma/client';
 import { APPROVAL_STATUS } from 'src/__common__/entities';
 
 @Injectable()
@@ -62,7 +62,7 @@ export class MeqsService {
           rv_id: input.rv_id || null,
           spr_id: input.spr_id || null,
           meqs_number: input.meqs_number,
-          reference_type: input.reference_type,
+          request_type: input.request_type,
           meqs_date: new Date(input.meqs_date),
           purpose: input.purpose,
           notes: input.notes,
@@ -339,6 +339,20 @@ export class MeqsService {
 
     return item.is_referenced
 
+  }
+
+  async findAllDefaultMeqsApprovers(): Promise<MEQSApproverSetting[]> {
+    return await this.prisma.mEQSApproverSetting.findMany({
+      include: {
+        approver: true
+      },
+      orderBy: {
+        order: 'asc'
+      },
+      where: {
+        is_deleted: false
+      }
+    })
   }
 
 }

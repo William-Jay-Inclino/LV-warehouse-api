@@ -8,28 +8,31 @@ import { UpdateSupplierInput } from './dto/update-supplier.input';
 export class SupplierResolver {
   constructor(private readonly supplierService: SupplierService) {}
 
-  @Mutation(() => Supplier)
-  createSupplier(@Args('createSupplierInput') createSupplierInput: CreateSupplierInput) {
-    return this.supplierService.create(createSupplierInput);
-  }
-
-  @Query(() => [Supplier], { name: 'supplier' })
-  findAll() {
+  @Query(() => [Supplier])
+  suppliers() {
     return this.supplierService.findAll();
   }
-
-  @Query(() => Supplier, { name: 'supplier' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  
+  @Query(() => Supplier)
+  supplier(@Args('id', { type: () => String }) id: string) {
     return this.supplierService.findOne(id);
   }
 
   @Mutation(() => Supplier)
-  updateSupplier(@Args('updateSupplierInput') updateSupplierInput: UpdateSupplierInput) {
-    return this.supplierService.update(updateSupplierInput.id, updateSupplierInput);
+  createSupplier(@Args('input') createSupplierInput: CreateSupplierInput) {
+    return this.supplierService.create(createSupplierInput);
   }
 
   @Mutation(() => Supplier)
-  removeSupplier(@Args('id', { type: () => Int }) id: number) {
+  updateSupplier(
+    @Args('id') id: string,
+    @Args('input') updateSupplierInput: UpdateSupplierInput
+  ) {
+    return this.supplierService.update(id, updateSupplierInput);
+  }
+
+  @Mutation(() => Boolean)
+  removeSupplier(@Args('id', { type: () => String }) id: string) {
     return this.supplierService.remove(id);
   }
 }
