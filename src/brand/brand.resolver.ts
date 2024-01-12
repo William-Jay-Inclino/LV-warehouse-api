@@ -19,14 +19,14 @@ export class BrandResolver {
   }
 
   @Mutation(() => Brand)
-  createBrand(@Args('data') createBrandInput: CreateBrandInput) {
+  createBrand(@Args('input') createBrandInput: CreateBrandInput) {
     return this.brandService.create(createBrandInput);
   }
 
   @Mutation(() => Brand)
   updateBrand(
     @Args('id') id: string,
-    @Args('data') updateBrandInput: UpdateBrandInput
+    @Args('input') updateBrandInput: UpdateBrandInput
   ) {
     return this.brandService.update(id, updateBrandInput);
   }

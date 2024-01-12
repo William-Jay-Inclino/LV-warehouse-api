@@ -10,7 +10,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Brand {
+model Supplier {
+  id      String @id @default(uuid())
+  name    String
+  contact String
+
+  supplier_items SupplierItem[]
+  pos            PO[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("supplier")
+}
+
+model Division {
+  id     String @id @default(uuid())
+  code   String
+  name   String
+  status Int
+
+  departments Department[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("division")
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  division_id String
+  division    Division @relation(fields: [division_id], references: [id], onDelete: Restrict)
+  code        String
+  name        String
+  status      Int
+
+  employees Employee[]
+  JOs       JO[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("department")
+}
+
+model Employee {
+  id            String     @id @default(uuid())
+  firstname     String
+  middlename    String?
+  lastname      String
+  position      Int
+  department_id String
+  department    Department @relation(fields: [department_id], references: [id], onDelete: Restrict)
+
+  canvasses       Canvass[] @relation("requestedBy")
+  noted_canvasses Canvass[] @relation("notedBy")
+
+  jo_approver_setting   JOApproverSetting?   @relation("JOApproverSetting")
+  rv_approver_setting   RVApproverSetting?   @relation("RVApproverSetting")
+  spr_approver_setting  SPRApproverSetting?  @relation("SPRApproverSetting")
+  meqs_approver_setting MEQSApproverSetting? @relation("MEQSApproverSetting")
+  po_approver_setting   POApproverSetting?   @relation("POApproverSetting")
+
+  jo_cancellers   JO[] @relation("canceller")
+  jo_supervisors  JO[] @relation("supervisor")
+  jo_requested_by JO[] @relation("requestedBy")
+
+  rv_cancellers   RV[] @relation("canceller")
+  rv_supervisors  RV[] @relation("supervisor")
+  rv_requested_by RV[] @relation("requestedBy")
+
+  spr_cancellers   SPR[] @relation("canceller")
+  spr_supervisors  SPR[] @relation("supervisor")
+  spr_requested_by SPR[] @relation("requestedBy")
+
+  jo_approvers   JOApprover[]
+  rv_approvers   RVApprover[]
+  spr_approvers  SPRApprover[]
+  meqs_approvers MEQSApprover[]
+  pos_approvers  POApprover[]
+
+  meqs_cancellers MEQS[] @relation("canceller")
+  po_cancellers   PO[]   @relation("canceller")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("employee")
+}
+
+model Classification {
   id   String @id @default(uuid())
   name String
 
@@ -18,5 +112,512 @@ model Brand {
   updated_at DateTime @updatedAt
   is_deleted Boolean  @default(false)
 
+  jos  JO[]
+  rvs  RV[]
+  sprs SPR[]
+
+  @@map("classification")
+}
+
+model Unit {
+  id   String @id @default(uuid())
+  name String
+
+  items Item[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("unit")
+}
+
+model Brand {
+  id   String @id @default(uuid())
+  name String
+
+  items Item[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
   @@map("brand")
+}
+
+model Vehicle {
+  id           String @id @default(uuid())
+  name         String
+  plate_number String
+
+  sprs SPR[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("vehicle")
+}
+
+model JOApproverSetting {
+  id          String   @id @default(uuid())
+  label       String
+  order       Int      @unique
+  approver_id String   @unique
+  approver    Employee @relation("JOApproverSetting", fields: [approver_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("jo_approver_setting")
+}
+
+model RVApproverSetting {
+  id          String   @id @default(uuid())
+  approver_id String   @unique
+  approver    Employee @relation("RVApproverSetting", fields: [approver_id], references: [id], onDelete: Restrict)
+  label       String
+  order       Int      @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("rv_approver_setting")
+}
+
+model SPRApproverSetting {
+  id          String   @id @default(uuid())
+  approver_id String   @unique
+  approver    Employee @relation("SPRApproverSetting", fields: [approver_id], references: [id], onDelete: Restrict)
+  label       String
+  order       Int      @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("spr_approver_setting")
+}
+
+model MEQSApproverSetting {
+  id          String   @id @default(uuid())
+  approver_id String   @unique
+  approver    Employee @relation("MEQSApproverSetting", fields: [approver_id], references: [id], onDelete: Restrict)
+  label       String
+  order       Int      @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("meqs_approver_setting")
+}
+
+model POApproverSetting {
+  id          String   @id @default(uuid())
+  approver_id String   @unique
+  approver    Employee @relation("POApproverSetting", fields: [approver_id], references: [id], onDelete: Restrict)
+  label       String
+  order       Int      @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("po_approver_setting")
+}
+
+model Item {
+  id          String  @id @default(uuid())
+  description String
+  brand_id    String?
+  brand       Brand?  @relation(fields: [brand_id], references: [id], onDelete: Restrict)
+  unit_id     String
+  unit        Unit    @relation(fields: [unit_id], references: [id], onDelete: Restrict)
+  quantity    Int
+
+  canvass_item   CanvassItem?
+  supplier_items SupplierItem[]
+  jo_items       JOItem[]
+  rv_items       RVItem[]
+  spr_items      SPRItem[]
+  meqs_items     MEQSItem[]
+  po_items       POItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("item")
+}
+
+model Canvass {
+  id              String   @id @default(uuid())
+  rc_number       String   @unique
+  date_requested  DateTime
+  purpose         String
+  notes           String?
+  requested_by_id String
+  requested_by    Employee @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  noted_by_id     String
+  noted_by        Employee @relation(fields: [noted_by_id], references: [id], onDelete: Restrict, name: "notedBy")
+  is_referenced   Boolean  @default(false)
+
+  jos           JO?
+  rvs           RV?
+  sprs          SPR?
+  canvass_items CanvassItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("canvass")
+}
+
+model CanvassItem {
+  id         String  @id @default(uuid())
+  canvass_id String
+  canvass    Canvass @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  item_id    String  @unique
+  item       Item    @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("canvass_item")
+}
+
+model SupplierItem {
+  id          String   @id @default(uuid())
+  item_id     String
+  item        Item     @relation(fields: [item_id], references: [id], onDelete: Restrict)
+  supplier_id String
+  supplier    Supplier @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
+  price       Float
+  is_awarded  Boolean  @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("supplier_item")
+}
+
+model JO {
+  id                String          @id @default(uuid())
+  jo_number         String          @unique
+  date_requested    DateTime
+  canvass_id        String          @unique
+  canvass           Canvass         @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  equipment         String
+  classification_id String?
+  classification    Classification? @relation(fields: [classification_id], references: [id], onDelete: Restrict)
+  department_id     String
+  department        Department      @relation(fields: [department_id], references: [id], onDelete: Restrict)
+  supervisor_id     String
+  supervisor        Employee        @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
+  purpose           String
+  notes             String?
+  status            Int             @default(1)
+  canceller_id      String?
+  canceller         Employee?       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee        @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_referenced     Boolean         @default(false)
+
+  jo_approvers JOApprover[]
+  jo_items     JOItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+  meqs       MEQS?
+
+  @@map("job_order")
+}
+
+model JOItem {
+  id      String @id @default(uuid())
+  jo_id   String
+  jo      JO     @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  item_id String
+  item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("jo_item")
+}
+
+model JOApprover {
+  id            String    @id @default(uuid())
+  jo_id         String
+  jo            JO        @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  approver_id   String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
+  status        Int
+  label         String
+  order         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("jo_approver")
+}
+
+model RV {
+  id                String          @id @default(uuid())
+  rv_number         String          @unique
+  date_requested    DateTime
+  canvass_id        String          @unique
+  canvass           Canvass         @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  work_order_no     String?
+  work_order_date   DateTime?
+  classification_id String?
+  classification    Classification? @relation(fields: [classification_id], references: [id], onDelete: Restrict)
+  supervisor_id     String
+  supervisor        Employee        @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
+  purpose           String
+  notes             String?
+  status            Int             @default(1)
+  canceller_id      String?
+  canceller         Employee?       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee        @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_referenced     Boolean         @default(false)
+
+  rv_approvers RVApprover[]
+  rv_items     RVItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+  meqs       MEQS?
+
+  @@map("request_voucher")
+}
+
+model RVItem {
+  id      String @id @default(uuid())
+  rv_id   String
+  rv      RV     @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  item_id String
+  item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("rv_item")
+}
+
+model RVApprover {
+  id            String    @id @default(uuid())
+  rv_id         String
+  rv            RV        @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  approver_id   String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
+  status        Int
+  label         String
+  order         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("rv_approver")
+}
+
+model SPR {
+  id                String          @id @default(uuid())
+  spr_number        String          @unique
+  date_requested    DateTime
+  canvass_id        String          @unique
+  canvass           Canvass         @relation(fields: [canvass_id], references: [id], onDelete: Restrict)
+  vehicle_id        String
+  vehicle           Vehicle         @relation(fields: [vehicle_id], references: [id], onDelete: Restrict)
+  classification_id String?
+  classification    Classification? @relation(fields: [classification_id], references: [id], onDelete: Restrict)
+  supervisor_id     String
+  supervisor        Employee        @relation(fields: [supervisor_id], references: [id], onDelete: Restrict, name: "supervisor")
+  purpose           String
+  notes             String?
+  status            Int             @default(1)
+  canceller_id      String?
+  canceller         Employee?       @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+  requested_by_id   String
+  requested_by      Employee        @relation(fields: [requested_by_id], references: [id], onDelete: Restrict, name: "requestedBy")
+  is_referenced     Boolean         @default(false)
+
+  spr_approvers SPRApprover[]
+  spr_items     SPRItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+  meqs       MEQS?
+
+  @@map("spare_parts_request")
+}
+
+model SPRItem {
+  id      String @id @default(uuid())
+  spr_id  String
+  spr     SPR    @relation(fields: [spr_id], references: [id], onDelete: Restrict)
+  item_id String
+  item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("spr_item")
+}
+
+model SPRApprover {
+  id            String    @id @default(uuid())
+  spr_id        String
+  spr           SPR       @relation(fields: [spr_id], references: [id], onDelete: Restrict)
+  approver_id   String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
+  status        Int
+  label         String
+  order         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("spr_approver")
+}
+
+model MEQS {
+  id           String    @id @default(uuid())
+  jo_id        String?   @unique
+  jo           JO?       @relation(fields: [jo_id], references: [id], onDelete: Restrict)
+  rv_id        String?   @unique
+  rv           RV?       @relation(fields: [rv_id], references: [id], onDelete: Restrict)
+  spr_id       String?   @unique
+  spr          SPR?      @relation(fields: [spr_id], references: [id], onDelete: Restrict)
+  meqs_number  String    @unique
+  request_type Int       @default(1)
+  meqs_date    DateTime
+  purpose      String
+  notes        String?
+  status       Int       @default(1)
+  canceller_id String?
+  canceller    Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+
+  meqs_approvers MEQSApprover[]
+  meqs_items     MEQSItem[]
+  pos            PO[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("material_equipment_quotation_summary")
+}
+
+model MEQSItem {
+  id      String @id @default(uuid())
+  meqs_id String
+  meqs    MEQS   @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
+  item_id String
+  item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("meqs_item")
+}
+
+model MEQSApprover {
+  id            String    @id @default(uuid())
+  meqs_id       String
+  meqs          MEQS      @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
+  approver_id   String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
+  status        Int
+  label         String
+  order         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("meqs_approver")
+}
+
+model PO {
+  id            String    @id @default(uuid())
+  meqs_id       String
+  meqs          MEQS      @relation(fields: [meqs_id], references: [id], onDelete: Restrict)
+  po_number     String    @unique
+  supplier_id   String
+  supplier      Supplier  @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
+  po_date       DateTime
+  payment_terms String
+  purpose       String
+  notes         String?
+  status        Int       @default(1)
+  canceller_id  String?
+  canceller     Employee? @relation(fields: [canceller_id], references: [id], onDelete: Restrict, name: "canceller")
+
+  po_approvers POApprover[]
+  po_items     POItem[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("purchase_order")
+}
+
+model POItem {
+  id      String @id @default(uuid())
+  po_id   String
+  po      PO     @relation(fields: [po_id], references: [id], onDelete: Restrict)
+  item_id String
+  item    Item   @relation(fields: [item_id], references: [id], onDelete: Restrict)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("po_item")
+}
+
+model POApprover {
+  id            String    @id @default(uuid())
+  po_id         String
+  po            PO        @relation(fields: [po_id], references: [id], onDelete: Restrict)
+  approver_id   String
+  approver      Employee  @relation(fields: [approver_id], references: [id], onDelete: Restrict)
+  date_approval DateTime?
+  notes         String?
+  status        Int
+  label         String
+  order         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
+
+  @@map("po_approver")
 }

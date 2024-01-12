@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateBrandInput } from './dto/create-brand.input';
 import { UpdateBrandInput } from './dto/update-brand.input';
 import { Brand } from './entities/brand.entity';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../__prisma__/prisma.service';
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -42,7 +42,6 @@ export class BrandService {
         return await this.prisma.brand.findUniqueOrThrow({
             where: {id, is_deleted: false}
         })
-
 
     }
 

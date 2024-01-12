@@ -7,15 +7,328 @@ type Brand {
   name: String!
 }
 
+type RemoveResponse {
+  success: Boolean!
+  msg: String!
+}
+
+type Employee {
+  id: String!
+  firstname: String!
+  middlename: String
+  lastname: String!
+  position: Float!
+  department_id: String!
+}
+
+type Unit {
+  id: String!
+  name: String!
+}
+
+type JO {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type RVItem {
+  id: String!
+  rv_id: String!
+  rv: RV!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Classification {
+  id: String!
+  name: String!
+}
+
+type RVApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  rv_id: String!
+  rv: RV!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type RV {
+  id: String!
+  canvass_id: String!
+  canvass: Canvass!
+  supervisor_id: String!
+  supervisor: Employee!
+  classification_id: String
+  classification: Classification
+  rv_number: String!
+  date_requested: String!
+  work_order_no: String
+  work_order_date: String
+  rv_items: [RVItem!]!
+  rv_approvers: [RVApprover!]!
+  purpose: String!
+  notes: String
+  status: Int!
+  canceller_id: String
+  canceller: Employee
+  requested_by_id: String!
+  requested_by: Employee!
+  is_referenced: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type SPR {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type MEQSApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  meqs_id: String!
+  meqs: MEQS!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type MEQSItem {
+  id: String!
+  meqs_id: String!
+  meqs: MEQS!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type MEQS {
+  id: String!
+  jo_id: String
+  jo: JO
+  rv_id: String
+  rv: RV
+  spr_id: String
+  spr: SPR
+  meqs_number: String!
+  request_type: Int!
+  meqs_date: String!
+  purpose: String!
+  notes: String
+  status: Int!
+  canceller_id: String
+  canceller: Employee
+  meqs_approvers: [MEQSApprover!]!
+  meqs_items: [MEQSItem!]!
+  pos: [PO!]
+  is_referenced: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type POApprover {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  po_id: String!
+  pos: PO!
+  date_approval: String
+  notes: String
+  status: Int!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type POItem {
+  id: String!
+  po_id: String!
+  pos: PO!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type PO {
+  id: String!
+  meqs_id: String!
+  meqs: MEQS!
+  po_number: String!
+  supplier_id: String!
+  supplier: Supplier!
+  po_date: String!
+  payment_terms: String!
+  purpose: String!
+  notes: String
+  status: Int!
+  canceller_id: String
+  canceller: Employee
+  po_approvers: [POApprover!]!
+  po_items: [POItem!]!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Supplier {
+  id: String!
+  name: String!
+  contact: String!
+  supplier_items: [SupplierItem!]!
+  pos: [PO!]!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type SupplierItem {
+  id: String!
+  item_id: String!
+  item: Item!
+  supplier_id: String!
+  supplier: Supplier!
+  price: Float!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Item {
+  id: String!
+  description: String!
+  brand_id: String
+  brand: Brand
+  unit_id: String!
+  unit: Unit!
+  quantity: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+  supplier_items: [SupplierItem!]
+}
+
+type CanvassItem {
+  id: String!
+  canvass_id: String!
+  canvass: Canvass!
+  item_id: String!
+  item: Item!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Canvass {
+  id: String!
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String!
+  requested_by_id: String!
+  requested_by: Employee!
+  noted_by_id: String!
+  noted_by: Employee!
+  canvass_items: [CanvassItem!]!
+  is_referenced: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type RVApproverSetting {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type MEQSApproverSetting {
+  id: String!
+  approver_id: String!
+  approver: Employee!
+  label: String!
+  order: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Query {
   brands: [Brand!]!
   brand(id: String!): Brand!
+  canvasses: [Canvass!]!
+  canvass(id: String!): Canvass!
+  rc_number: String!
+  employees: [Employee!]!
+  employee(id: Int!): Employee!
+  units: [Unit!]!
+  unit(id: String!): Unit!
+  rvs: [RV!]!
+  default_rv_approvers: [RVApproverSetting!]!
+  rv(id: String!): RV!
+  rv_number: String!
+  meqs: [MEQS!]!
+  default_meqs_approvers: [MEQSApproverSetting!]!
+  meq(id: String!): MEQS!
+  meqs_number: String!
+  jo(id: Int!): JO!
+  spr(id: Int!): SPR!
+  pos: [PO!]!
+  po(id: String!): PO!
+  po_number: String!
+  suppliers: [Supplier!]!
+  supplier(id: String!): Supplier!
 }
 
 type Mutation {
-  createBrand(data: CreateBrandInput!): Brand!
-  updateBrand(id: String!, data: UpdateBrandInput!): Brand!
+  createBrand(input: CreateBrandInput!): Brand!
+  updateBrand(id: String!, input: UpdateBrandInput!): Brand!
   removeBrand(id: String!): Boolean!
+  createCanvass(input: CreateCanvassInput!): Canvass!
+  updateCanvass(id: String!, input: UpdateCanvassInput!): Canvass!
+  removeCanvass(id: String!): RemoveResponse!
+  createEmployee(createEmployeeInput: CreateEmployeeInput!): Employee!
+  updateEmployee(updateEmployeeInput: UpdateEmployeeInput!): Employee!
+  removeEmployee(id: Int!): Employee!
+  createUnit(data: CreateUnitInput!): Unit!
+  updateUnit(id: String!, data: UpdateUnitInput!): Unit!
+  removeUnit(id: String!): Boolean!
+  createRv(input: CreateRvInput!): RV!
+  updateRv(id: String!, input: UpdateRvInput!): RV!
+  removeRv(id: String!): RemoveResponse!
+  createMeqs(input: CreateMeqsInput!): MEQS!
+  updateMeqs(id: String!, input: UpdateMeqsInput!): MEQS!
+  removeMeqs(id: String!): MEQS!
+  createJo(createJoInput: CreateJoInput!): JO!
+  updateJo(updateJoInput: UpdateJoInput!): JO!
+  removeJo(id: Int!): JO!
+  createSpr(createSprInput: CreateSprInput!): SPR!
+  updateSpr(updateSprInput: UpdateSprInput!): SPR!
+  removeSpr(id: Int!): SPR!
+  createPo(input: CreatePoInput!): PO!
+  updatePo(id: String!, input: UpdatePoInput!): PO!
+  removePo(id: String!): PO!
+  createSupplier(input: CreateSupplierInput!): Supplier!
+  updateSupplier(id: String!, input: UpdateSupplierInput!): Supplier!
+  removeSupplier(id: String!): Boolean!
 }
 
 input CreateBrandInput {
@@ -24,4 +337,192 @@ input CreateBrandInput {
 
 input UpdateBrandInput {
   name: String!
+}
+
+input CreateCanvassInput {
+  rc_number: String!
+  date_requested: String!
+  purpose: String!
+  notes: String
+  requested_by_id: String!
+  noted_by_id: String!
+  items: [CreateItemInput!]!
+}
+
+input CreateItemInput {
+  description: String!
+  brand_id: String
+  unit_id: String!
+  quantity: Int!
+}
+
+input UpdateCanvassInput {
+  date_requested: String
+  purpose: String
+  notes: String
+  requested_by_id: String
+  noted_by_id: String
+  items: [CreateItemInput!]
+}
+
+input CreateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateEmployeeInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateUnitInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateUnitInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateRvInput {
+  canvass_id: String!
+  supervisor_id: String!
+  classification_id: String
+  rv_number: String!
+  date_requested: String!
+  work_order_no: String
+  work_order_date: String
+  items: [CreateItemInput!]!
+  approvers: [CreateRvApproverInput!]!
+  purpose: String!
+  notes: String
+  status: Int!
+  requested_by_id: String!
+}
+
+input CreateRvApproverInput {
+  approver_id: String!
+  status: Int!
+  label: String!
+  order: Int!
+}
+
+input UpdateRvInput {
+  supervisor_id: String
+  classification_id: String
+  date_requested: String
+  work_order_no: String
+  work_order_date: String
+  items: [CreateItemInput!]
+  purpose: String
+  notes: String
+  status: Int
+  requested_by_id: String
+}
+
+input CreateMeqsInput {
+  jo_id: String
+  rv_id: String
+  spr_id: String
+  meqs_number: String!
+  request_type: Int!
+  meqs_date: String!
+  purpose: String!
+  notes: String
+  status: Int!
+  items: [CreateItemWithSupplierInput!]!
+  approvers: [CreateMeqsApproverInput!]!
+}
+
+input CreateItemWithSupplierInput {
+  description: String!
+  brand_id: String
+  unit_id: String!
+  quantity: Int!
+  supplier_items: [CreateSupplierItemInput!]!
+}
+
+input CreateSupplierItemInput {
+  supplier_id: String!
+  price: Float!
+}
+
+input CreateMeqsApproverInput {
+  approver_id: String!
+  status: Int!
+  label: String!
+  order: Int!
+}
+
+input UpdateMeqsInput {
+  meqs_date: String
+  purpose: String
+  notes: String
+  status: Int
+  items: [CreateItemWithSupplierInput!]
+}
+
+input CreateJoInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateJoInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateSprInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateSprInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreatePoInput {
+  meqs_id: String!
+  po_number: String!
+  supplier_id: String!
+  po_date: String!
+  payment_terms: String!
+  purpose: String!
+  notes: String
+  status: Int!
+  items: [CreateItemWithSupplierInput!]!
+  approvers: [CreatePoApproverInput!]!
+}
+
+input CreatePoApproverInput {
+  approver_id: String!
+  status: Int!
+  label: String!
+  order: Int!
+}
+
+input UpdatePoInput {
+  po_date: String
+  payment_terms: String
+  purpose: String
+  notes: String
+  status: Int
+  items: [CreateItemWithSupplierInput!]
+}
+
+input CreateSupplierInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateSupplierInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
