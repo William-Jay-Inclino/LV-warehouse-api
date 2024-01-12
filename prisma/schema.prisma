@@ -298,6 +298,7 @@ model SupplierItem {
   supplier_id String
   supplier    Supplier @relation(fields: [supplier_id], references: [id], onDelete: Restrict)
   price       Float
+  is_awarded  Boolean  @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
